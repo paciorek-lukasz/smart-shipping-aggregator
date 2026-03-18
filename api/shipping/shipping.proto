@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package smartshippingaggregator;
+
+message GetQuotesRequest {
+    Party sender = 1;
+    Party recipient = 2;
+    Package package = 3;
+}
+
+message GetQuotesResponse {
+    repeated Option options = 1;
+}
+
+message Party {
+    string name = 1;
+    Address address = 2;
+    string phone = 3;
+    string email = 4;
+}
+
+message Address {
+    // Address information such as street, building number, apartament number
+    string address = 1;
+    string postal_code = 2;
+    string city = 3;
+    string country = 4;
+    string longitude = 5;
+    string latitude = 6;
+}
+
+message Package {
+    repeated Item items = 1;
+    int32 total_price = 2;
+    string currency = 3;
+    Dimensions dimensions = 4;
+}
+
+message Item {
+    int32 item_id = 1;
+    string sku = 2;
+    string name = 3;
+    int32 price = 4;
+    int32 quantity = 5;
+}
+
+message Dimensions {
+    int32 length_cm = 1;
+    int32 width_cm = 2;
+    int32 height_cm = 3;
+    int32 total_weight_cm = 4;
+    int32 total_volume_cm3 = 5;
+}
+
+message Option {
+    int32 option_id = 1;
+    string carrier_product = 2;
+    int32 price = 3;
+    string currency = 4;
+    repeated DeliveryTimeSlots delivery_time_slots = 5;
+    repeated PickupPoints pickup_points = 6;
+}
+
+message DeliveryTimeSlots {
+    // Time slots are provided in RFC3339
+    string start = 1;
+    // Time slots are provided in RFC3339
+    string end = 2;
+    string time_zone = 3;
+}
+
+message PickupPoints {
+    string pickup_point_id = 1;
+    string name = 2;
+    Address address = 3;
+    string phone = 4;
+    LocationType location_type = 5;
+    repeated OpeningHours opening_hours = 6;
+    bool is_operational = 7;
+}
+
+enum LocationType {
+    TYPE_LOCKER = 0;
+    TYPE_SERVICE_POINT = 1;
+    TYPE_UNKNOWN = 2;
+}
+
+message OpeningHours {
+    string day_of_week = 1;
+    string opens = 2;
+    string closes = 3;
+}
