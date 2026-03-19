@@ -554,10 +554,10 @@ type Option struct {
 	OptionId       int32                  `protobuf:"varint,1,opt,name=option_id,json=optionId,proto3" json:"option_id,omitempty"`
 	CarrierProduct string                 `protobuf:"bytes,2,opt,name=carrier_product,json=carrierProduct,proto3" json:"carrier_product,omitempty"`
 	// Price is provided in cents
-	Price             int32                `protobuf:"varint,3,opt,name=price,proto3" json:"price,omitempty"`
-	Currency          string               `protobuf:"bytes,4,opt,name=currency,proto3" json:"currency,omitempty"`
-	DeliveryTimeSlots []*DeliveryTimeSlots `protobuf:"bytes,5,rep,name=delivery_time_slots,json=deliveryTimeSlots,proto3" json:"delivery_time_slots,omitempty"`
-	PickupPoints      []*PickupPoint       `protobuf:"bytes,6,rep,name=pickup_points,json=pickupPoints,proto3" json:"pickup_points,omitempty"`
+	Price             int32               `protobuf:"varint,3,opt,name=price,proto3" json:"price,omitempty"`
+	Currency          string              `protobuf:"bytes,4,opt,name=currency,proto3" json:"currency,omitempty"`
+	DeliveryTimeSlots []*DeliveryTimeSlot `protobuf:"bytes,5,rep,name=delivery_time_slots,json=deliveryTimeSlots,proto3" json:"delivery_time_slots,omitempty"`
+	PickupPoints      []*PickupPoint      `protobuf:"bytes,6,rep,name=pickup_points,json=pickupPoints,proto3" json:"pickup_points,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -620,7 +620,7 @@ func (x *Option) GetCurrency() string {
 	return ""
 }
 
-func (x *Option) GetDeliveryTimeSlots() []*DeliveryTimeSlots {
+func (x *Option) GetDeliveryTimeSlots() []*DeliveryTimeSlot {
 	if x != nil {
 		return x.DeliveryTimeSlots
 	}
@@ -634,7 +634,7 @@ func (x *Option) GetPickupPoints() []*PickupPoint {
 	return nil
 }
 
-type DeliveryTimeSlots struct {
+type DeliveryTimeSlot struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Time slots are provided in RFC3339
 	Start string `protobuf:"bytes,1,opt,name=start,proto3" json:"start,omitempty"`
@@ -645,20 +645,20 @@ type DeliveryTimeSlots struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeliveryTimeSlots) Reset() {
-	*x = DeliveryTimeSlots{}
+func (x *DeliveryTimeSlot) Reset() {
+	*x = DeliveryTimeSlot{}
 	mi := &file_api_shipping_shipping_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeliveryTimeSlots) String() string {
+func (x *DeliveryTimeSlot) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeliveryTimeSlots) ProtoMessage() {}
+func (*DeliveryTimeSlot) ProtoMessage() {}
 
-func (x *DeliveryTimeSlots) ProtoReflect() protoreflect.Message {
+func (x *DeliveryTimeSlot) ProtoReflect() protoreflect.Message {
 	mi := &file_api_shipping_shipping_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -670,26 +670,26 @@ func (x *DeliveryTimeSlots) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeliveryTimeSlots.ProtoReflect.Descriptor instead.
-func (*DeliveryTimeSlots) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeliveryTimeSlot.ProtoReflect.Descriptor instead.
+func (*DeliveryTimeSlot) Descriptor() ([]byte, []int) {
 	return file_api_shipping_shipping_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *DeliveryTimeSlots) GetStart() string {
+func (x *DeliveryTimeSlot) GetStart() string {
 	if x != nil {
 		return x.Start
 	}
 	return ""
 }
 
-func (x *DeliveryTimeSlots) GetEnd() string {
+func (x *DeliveryTimeSlot) GetEnd() string {
 	if x != nil {
 		return x.End
 	}
 	return ""
 }
 
-func (x *DeliveryTimeSlots) GetTimeZone() string {
+func (x *DeliveryTimeSlot) GetTimeZone() string {
 	if x != nil {
 		return x.TimeZone
 	}
@@ -703,7 +703,7 @@ type PickupPoint struct {
 	Address       *Address               `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
 	Phone         string                 `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"`
 	LocationType  LocationType           `protobuf:"varint,5,opt,name=location_type,json=locationType,proto3,enum=smartshippingaggregator.LocationType" json:"location_type,omitempty"`
-	OpeningHours  []*OpeningHours        `protobuf:"bytes,6,rep,name=opening_hours,json=openingHours,proto3" json:"opening_hours,omitempty"`
+	OpeningHours  []*OpeningHour         `protobuf:"bytes,6,rep,name=opening_hours,json=openingHours,proto3" json:"opening_hours,omitempty"`
 	IsOperational bool                   `protobuf:"varint,7,opt,name=is_operational,json=isOperational,proto3" json:"is_operational,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -774,7 +774,7 @@ func (x *PickupPoint) GetLocationType() LocationType {
 	return LocationType_TYPE_LOCKER
 }
 
-func (x *PickupPoint) GetOpeningHours() []*OpeningHours {
+func (x *PickupPoint) GetOpeningHours() []*OpeningHour {
 	if x != nil {
 		return x.OpeningHours
 	}
@@ -788,7 +788,7 @@ func (x *PickupPoint) GetIsOperational() bool {
 	return false
 }
 
-type OpeningHours struct {
+type OpeningHour struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	DayOfWeek     string                 `protobuf:"bytes,1,opt,name=day_of_week,json=dayOfWeek,proto3" json:"day_of_week,omitempty"`
 	Opens         string                 `protobuf:"bytes,2,opt,name=opens,proto3" json:"opens,omitempty"`
@@ -797,20 +797,20 @@ type OpeningHours struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *OpeningHours) Reset() {
-	*x = OpeningHours{}
+func (x *OpeningHour) Reset() {
+	*x = OpeningHour{}
 	mi := &file_api_shipping_shipping_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *OpeningHours) String() string {
+func (x *OpeningHour) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*OpeningHours) ProtoMessage() {}
+func (*OpeningHour) ProtoMessage() {}
 
-func (x *OpeningHours) ProtoReflect() protoreflect.Message {
+func (x *OpeningHour) ProtoReflect() protoreflect.Message {
 	mi := &file_api_shipping_shipping_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -822,26 +822,26 @@ func (x *OpeningHours) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use OpeningHours.ProtoReflect.Descriptor instead.
-func (*OpeningHours) Descriptor() ([]byte, []int) {
+// Deprecated: Use OpeningHour.ProtoReflect.Descriptor instead.
+func (*OpeningHour) Descriptor() ([]byte, []int) {
 	return file_api_shipping_shipping_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *OpeningHours) GetDayOfWeek() string {
+func (x *OpeningHour) GetDayOfWeek() string {
 	if x != nil {
 		return x.DayOfWeek
 	}
 	return ""
 }
 
-func (x *OpeningHours) GetOpens() string {
+func (x *OpeningHour) GetOpens() string {
 	if x != nil {
 		return x.Opens
 	}
 	return ""
 }
 
-func (x *OpeningHours) GetCloses() string {
+func (x *OpeningHour) GetCloses() string {
 	if x != nil {
 		return x.Closes
 	}
@@ -892,27 +892,27 @@ const file_api_shipping_shipping_proto_rawDesc = "" +
 	"\bwidth_cm\x18\x02 \x01(\x05R\awidthCm\x12\x1b\n" +
 	"\theight_cm\x18\x03 \x01(\x05R\bheightCm\x12$\n" +
 	"\x0etotal_weight_g\x18\x04 \x01(\x05R\ftotalWeightG\x12(\n" +
-	"\x10total_volume_cm3\x18\x05 \x01(\x05R\x0etotalVolumeCm3\"\xa7\x02\n" +
+	"\x10total_volume_cm3\x18\x05 \x01(\x05R\x0etotalVolumeCm3\"\xa6\x02\n" +
 	"\x06Option\x12\x1b\n" +
 	"\toption_id\x18\x01 \x01(\x05R\boptionId\x12'\n" +
 	"\x0fcarrier_product\x18\x02 \x01(\tR\x0ecarrierProduct\x12\x14\n" +
 	"\x05price\x18\x03 \x01(\x05R\x05price\x12\x1a\n" +
-	"\bcurrency\x18\x04 \x01(\tR\bcurrency\x12Z\n" +
-	"\x13delivery_time_slots\x18\x05 \x03(\v2*.smartshippingaggregator.DeliveryTimeSlotsR\x11deliveryTimeSlots\x12I\n" +
-	"\rpickup_points\x18\x06 \x03(\v2$.smartshippingaggregator.PickupPointR\fpickupPoints\"X\n" +
-	"\x11DeliveryTimeSlots\x12\x14\n" +
+	"\bcurrency\x18\x04 \x01(\tR\bcurrency\x12Y\n" +
+	"\x13delivery_time_slots\x18\x05 \x03(\v2).smartshippingaggregator.DeliveryTimeSlotR\x11deliveryTimeSlots\x12I\n" +
+	"\rpickup_points\x18\x06 \x03(\v2$.smartshippingaggregator.PickupPointR\fpickupPoints\"W\n" +
+	"\x10DeliveryTimeSlot\x12\x14\n" +
 	"\x05start\x18\x01 \x01(\tR\x05start\x12\x10\n" +
 	"\x03end\x18\x02 \x01(\tR\x03end\x12\x1b\n" +
-	"\ttime_zone\x18\x03 \x01(\tR\btimeZone\"\xda\x02\n" +
+	"\ttime_zone\x18\x03 \x01(\tR\btimeZone\"\xd9\x02\n" +
 	"\vPickupPoint\x12&\n" +
 	"\x0fpickup_point_id\x18\x01 \x01(\tR\rpickupPointId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12:\n" +
 	"\aaddress\x18\x03 \x01(\v2 .smartshippingaggregator.AddressR\aaddress\x12\x14\n" +
 	"\x05phone\x18\x04 \x01(\tR\x05phone\x12J\n" +
-	"\rlocation_type\x18\x05 \x01(\x0e2%.smartshippingaggregator.LocationTypeR\flocationType\x12J\n" +
-	"\ropening_hours\x18\x06 \x03(\v2%.smartshippingaggregator.OpeningHoursR\fopeningHours\x12%\n" +
-	"\x0eis_operational\x18\a \x01(\bR\risOperational\"\\\n" +
-	"\fOpeningHours\x12\x1e\n" +
+	"\rlocation_type\x18\x05 \x01(\x0e2%.smartshippingaggregator.LocationTypeR\flocationType\x12I\n" +
+	"\ropening_hours\x18\x06 \x03(\v2$.smartshippingaggregator.OpeningHourR\fopeningHours\x12%\n" +
+	"\x0eis_operational\x18\a \x01(\bR\risOperational\"[\n" +
+	"\vOpeningHour\x12\x1e\n" +
 	"\vday_of_week\x18\x01 \x01(\tR\tdayOfWeek\x12\x14\n" +
 	"\x05opens\x18\x02 \x01(\tR\x05opens\x12\x16\n" +
 	"\x06closes\x18\x03 \x01(\tR\x06closes*I\n" +
@@ -945,9 +945,9 @@ var file_api_shipping_shipping_proto_goTypes = []any{
 	(*Item)(nil),              // 6: smartshippingaggregator.Item
 	(*Dimensions)(nil),        // 7: smartshippingaggregator.Dimensions
 	(*Option)(nil),            // 8: smartshippingaggregator.Option
-	(*DeliveryTimeSlots)(nil), // 9: smartshippingaggregator.DeliveryTimeSlots
+	(*DeliveryTimeSlot)(nil),  // 9: smartshippingaggregator.DeliveryTimeSlot
 	(*PickupPoint)(nil),       // 10: smartshippingaggregator.PickupPoint
-	(*OpeningHours)(nil),      // 11: smartshippingaggregator.OpeningHours
+	(*OpeningHour)(nil),       // 11: smartshippingaggregator.OpeningHour
 }
 var file_api_shipping_shipping_proto_depIdxs = []int32{
 	3,  // 0: smartshippingaggregator.GetQuotesRequest.sender:type_name -> smartshippingaggregator.Party
@@ -957,11 +957,11 @@ var file_api_shipping_shipping_proto_depIdxs = []int32{
 	4,  // 4: smartshippingaggregator.Party.address:type_name -> smartshippingaggregator.Address
 	6,  // 5: smartshippingaggregator.Package.items:type_name -> smartshippingaggregator.Item
 	7,  // 6: smartshippingaggregator.Package.dimensions:type_name -> smartshippingaggregator.Dimensions
-	9,  // 7: smartshippingaggregator.Option.delivery_time_slots:type_name -> smartshippingaggregator.DeliveryTimeSlots
+	9,  // 7: smartshippingaggregator.Option.delivery_time_slots:type_name -> smartshippingaggregator.DeliveryTimeSlot
 	10, // 8: smartshippingaggregator.Option.pickup_points:type_name -> smartshippingaggregator.PickupPoint
 	4,  // 9: smartshippingaggregator.PickupPoint.address:type_name -> smartshippingaggregator.Address
 	0,  // 10: smartshippingaggregator.PickupPoint.location_type:type_name -> smartshippingaggregator.LocationType
-	11, // 11: smartshippingaggregator.PickupPoint.opening_hours:type_name -> smartshippingaggregator.OpeningHours
+	11, // 11: smartshippingaggregator.PickupPoint.opening_hours:type_name -> smartshippingaggregator.OpeningHour
 	12, // [12:12] is the sub-list for method output_type
 	12, // [12:12] is the sub-list for method input_type
 	12, // [12:12] is the sub-list for extension type_name

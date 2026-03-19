@@ -62,11 +62,11 @@ message Option {
     // Price is provided in cents
     int32 price = 3;
     string currency = 4;
-    repeated DeliveryTimeSlots delivery_time_slots = 5;
+    repeated DeliveryTimeSlot delivery_time_slots = 5;
     repeated PickupPoint pickup_points = 6;
 }
 
-message DeliveryTimeSlots {
+message DeliveryTimeSlot {
     // Time slots are provided in RFC3339
     string start = 1;
     // Time slots are provided in RFC3339
@@ -80,7 +80,7 @@ message PickupPoint {
     Address address = 3;
     string phone = 4;
     LocationType location_type = 5;
-    repeated OpeningHours opening_hours = 6;
+    repeated OpeningHour opening_hours = 6;
     bool is_operational = 7;
 }
 
@@ -90,7 +90,7 @@ enum LocationType {
     TYPE_UNKNOWN = 2;
 }
 
-message OpeningHours {
+message OpeningHour {
     string day_of_week = 1;
     string opens = 2;
     string closes = 3;
