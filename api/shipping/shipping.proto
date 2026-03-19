@@ -31,6 +31,7 @@ message Address {
 
 message Package {
     repeated Item items = 1;
+    // Price is provided in cents
     int32 total_price = 2;
     string currency = 3;
     Dimensions dimensions = 4;
@@ -40,6 +41,7 @@ message Item {
     int32 item_id = 1;
     string sku = 2;
     string name = 3;
+    // Price is provided in cents
     int32 price = 4;
     int32 quantity = 5;
 }
@@ -48,17 +50,18 @@ message Dimensions {
     int32 length_cm = 1;
     int32 width_cm = 2;
     int32 height_cm = 3;
-    int32 total_weight_cm = 4;
+    int32 total_weight_g = 4;
     int32 total_volume_cm3 = 5;
 }
 
 message Option {
     int32 option_id = 1;
     string carrier_product = 2;
+    // Price is provided in cents
     int32 price = 3;
     string currency = 4;
     repeated DeliveryTimeSlots delivery_time_slots = 5;
-    repeated PickupPoints pickup_points = 6;
+    repeated PickupPoint pickup_points = 6;
 }
 
 message DeliveryTimeSlots {
@@ -69,7 +72,7 @@ message DeliveryTimeSlots {
     string time_zone = 3;
 }
 
-message PickupPoints {
+message PickupPoint {
     string pickup_point_id = 1;
     string name = 2;
     Address address = 3;
