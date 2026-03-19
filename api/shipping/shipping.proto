@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package smartshippingaggregator;
 
-option go_package = "./api/shipping";
+option go_package = "github.com/dzwiedz90/smart-shipping-aggregator/api/shipping";
 
 message GetQuotesRequest {
     Party sender = 1;

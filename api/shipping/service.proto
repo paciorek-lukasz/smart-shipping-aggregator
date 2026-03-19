@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package smartshippingaggregator;
+
+import "api/shipping/shipping.proto";
+
+option go_package = "github.com/dzwiedz90/smart-shipping-aggregator/api/shipping";
+
+service ShippingService {
+    rpc GetQuotes (GetQuotesRequest) returns (GetQuotesResponse);
+}
