@@ -28,14 +28,14 @@ func (h *Handler) GetQuotes(ctx context.Context, req *pb.GetQuotesRequest) (*pb.
 		return nil, status.Error(codes.InvalidArgument, "sender and recipient are required")
 	}
 
-	domainReq := MapProtoToDomain(req)
+	domainReq := mapProtoToDomain(req)
 
 	quotes, err := h.service.GetQuotes(ctx, domainReq)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to fetch quotes: %v", err)
 	}
 
-	mapped, err := MapDomainToProto(quotes)
+	mapped, err := mapDomainToProto(quotes)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to map domain models to proto")
 	}

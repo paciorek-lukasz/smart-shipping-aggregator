@@ -7,7 +7,7 @@ import (
 	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
 )
 
-func MapProtoToDomain(pbReq *pb.GetQuotesRequest) *domain.GetQuotesRequest {
+func mapProtoToDomain(pbReq *pb.GetQuotesRequest) *domain.GetQuotesRequest {
 	if pbReq == nil {
 		return nil
 	}
@@ -66,7 +66,7 @@ func MapProtoToDomain(pbReq *pb.GetQuotesRequest) *domain.GetQuotesRequest {
 	}
 }
 
-func MapDomainToProto(resp *domain.GetQuotesResponse) (*pb.GetQuotesResponse, error) {
+func mapDomainToProto(resp *domain.GetQuotesResponse) (*pb.GetQuotesResponse, error) {
 	if resp == nil {
 		return nil, errors.New("empty response")
 	}
