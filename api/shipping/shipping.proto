@@ -8,6 +8,13 @@ message GetQuotesRequest {
     Party sender = 1;
     Party recipient = 2;
     Package package = 3;
+    DeliveryType delivery_type = 4;
+}
+
+enum DeliveryType {
+    DELIVERY_TYPE_UNKNOWN = 0;
+	DELIVERY_TYPE_HOME_DELIVERY = 1;
+	DELIVERY_TYPE_PICKUP       = 2;
 }
 
 message GetQuotesResponse {
@@ -64,6 +71,7 @@ message Option {
     string currency = 4;
     repeated DeliveryTimeSlot delivery_time_slots = 5;
     repeated PickupPoint pickup_points = 6;
+    DeliveryType delivery_type = 7;
 }
 
 message DeliveryTimeSlot {
@@ -85,9 +93,9 @@ message PickupPoint {
 }
 
 enum LocationType {
-    TYPE_LOCKER = 0;
-    TYPE_SERVICE_POINT = 1;
-    TYPE_UNKNOWN = 2;
+    TYPE_UNKNOWN = 0;
+    TYPE_LOCKER = 1;
+    TYPE_SERVICE_POINT = 2;
 }
 
 message OpeningHour {

@@ -21,25 +21,74 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type DeliveryType int32
+
+const (
+	DeliveryType_DELIVERY_TYPE_UNKNOWN       DeliveryType = 0
+	DeliveryType_DELIVERY_TYPE_HOME_DELIVERY DeliveryType = 1
+	DeliveryType_DELIVERY_TYPE_PICKUP        DeliveryType = 2
+)
+
+// Enum value maps for DeliveryType.
+var (
+	DeliveryType_name = map[int32]string{
+		0: "DELIVERY_TYPE_UNKNOWN",
+		1: "DELIVERY_TYPE_HOME_DELIVERY",
+		2: "DELIVERY_TYPE_PICKUP",
+	}
+	DeliveryType_value = map[string]int32{
+		"DELIVERY_TYPE_UNKNOWN":       0,
+		"DELIVERY_TYPE_HOME_DELIVERY": 1,
+		"DELIVERY_TYPE_PICKUP":        2,
+	}
+)
+
+func (x DeliveryType) Enum() *DeliveryType {
+	p := new(DeliveryType)
+	*p = x
+	return p
+}
+
+func (x DeliveryType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (DeliveryType) Descriptor() protoreflect.EnumDescriptor {
+	return file_api_shipping_shipping_proto_enumTypes[0].Descriptor()
+}
+
+func (DeliveryType) Type() protoreflect.EnumType {
+	return &file_api_shipping_shipping_proto_enumTypes[0]
+}
+
+func (x DeliveryType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use DeliveryType.Descriptor instead.
+func (DeliveryType) EnumDescriptor() ([]byte, []int) {
+	return file_api_shipping_shipping_proto_rawDescGZIP(), []int{0}
+}
+
 type LocationType int32
 
 const (
-	LocationType_TYPE_LOCKER        LocationType = 0
-	LocationType_TYPE_SERVICE_POINT LocationType = 1
-	LocationType_TYPE_UNKNOWN       LocationType = 2
+	LocationType_TYPE_UNKNOWN       LocationType = 0
+	LocationType_TYPE_LOCKER        LocationType = 1
+	LocationType_TYPE_SERVICE_POINT LocationType = 2
 )
 
 // Enum value maps for LocationType.
 var (
 	LocationType_name = map[int32]string{
-		0: "TYPE_LOCKER",
-		1: "TYPE_SERVICE_POINT",
-		2: "TYPE_UNKNOWN",
+		0: "TYPE_UNKNOWN",
+		1: "TYPE_LOCKER",
+		2: "TYPE_SERVICE_POINT",
 	}
 	LocationType_value = map[string]int32{
-		"TYPE_LOCKER":        0,
-		"TYPE_SERVICE_POINT": 1,
-		"TYPE_UNKNOWN":       2,
+		"TYPE_UNKNOWN":       0,
+		"TYPE_LOCKER":        1,
+		"TYPE_SERVICE_POINT": 2,
 	}
 )
 
@@ -54,11 +103,11 @@ func (x LocationType) String() string {
 }
 
 func (LocationType) Descriptor() protoreflect.EnumDescriptor {
-	return file_api_shipping_shipping_proto_enumTypes[0].Descriptor()
+	return file_api_shipping_shipping_proto_enumTypes[1].Descriptor()
 }
 
 func (LocationType) Type() protoreflect.EnumType {
-	return &file_api_shipping_shipping_proto_enumTypes[0]
+	return &file_api_shipping_shipping_proto_enumTypes[1]
 }
 
 func (x LocationType) Number() protoreflect.EnumNumber {
@@ -67,7 +116,7 @@ func (x LocationType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use LocationType.Descriptor instead.
 func (LocationType) EnumDescriptor() ([]byte, []int) {
-	return file_api_shipping_shipping_proto_rawDescGZIP(), []int{0}
+	return file_api_shipping_shipping_proto_rawDescGZIP(), []int{1}
 }
 
 type GetQuotesRequest struct {
@@ -75,6 +124,7 @@ type GetQuotesRequest struct {
 	Sender        *Party                 `protobuf:"bytes,1,opt,name=sender,proto3" json:"sender,omitempty"`
 	Recipient     *Party                 `protobuf:"bytes,2,opt,name=recipient,proto3" json:"recipient,omitempty"`
 	Package       *Package               `protobuf:"bytes,3,opt,name=package,proto3" json:"package,omitempty"`
+	DeliveryType  DeliveryType           `protobuf:"varint,4,opt,name=delivery_type,json=deliveryType,proto3,enum=smartshippingaggregator.DeliveryType" json:"delivery_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -128,6 +178,13 @@ func (x *GetQuotesRequest) GetPackage() *Package {
 		return x.Package
 	}
 	return nil
+}
+
+func (x *GetQuotesRequest) GetDeliveryType() DeliveryType {
+	if x != nil {
+		return x.DeliveryType
+	}
+	return DeliveryType_DELIVERY_TYPE_UNKNOWN
 }
 
 type GetQuotesResponse struct {
@@ -558,6 +615,7 @@ type Option struct {
 	Currency          string              `protobuf:"bytes,4,opt,name=currency,proto3" json:"currency,omitempty"`
 	DeliveryTimeSlots []*DeliveryTimeSlot `protobuf:"bytes,5,rep,name=delivery_time_slots,json=deliveryTimeSlots,proto3" json:"delivery_time_slots,omitempty"`
 	PickupPoints      []*PickupPoint      `protobuf:"bytes,6,rep,name=pickup_points,json=pickupPoints,proto3" json:"pickup_points,omitempty"`
+	DeliveryType      DeliveryType        `protobuf:"varint,7,opt,name=delivery_type,json=deliveryType,proto3,enum=smartshippingaggregator.DeliveryType" json:"delivery_type,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -632,6 +690,13 @@ func (x *Option) GetPickupPoints() []*PickupPoint {
 		return x.PickupPoints
 	}
 	return nil
+}
+
+func (x *Option) GetDeliveryType() DeliveryType {
+	if x != nil {
+		return x.DeliveryType
+	}
+	return DeliveryType_DELIVERY_TYPE_UNKNOWN
 }
 
 type DeliveryTimeSlot struct {
@@ -771,7 +836,7 @@ func (x *PickupPoint) GetLocationType() LocationType {
 	if x != nil {
 		return x.LocationType
 	}
-	return LocationType_TYPE_LOCKER
+	return LocationType_TYPE_UNKNOWN
 }
 
 func (x *PickupPoint) GetOpeningHours() []*OpeningHour {
@@ -852,11 +917,12 @@ var File_api_shipping_shipping_proto protoreflect.FileDescriptor
 
 const file_api_shipping_shipping_proto_rawDesc = "" +
 	"\n" +
-	"\x1bapi/shipping/shipping.proto\x12\x17smartshippingaggregator\"\xc4\x01\n" +
+	"\x1bapi/shipping/shipping.proto\x12\x17smartshippingaggregator\"\x90\x02\n" +
 	"\x10GetQuotesRequest\x126\n" +
 	"\x06sender\x18\x01 \x01(\v2\x1e.smartshippingaggregator.PartyR\x06sender\x12<\n" +
 	"\trecipient\x18\x02 \x01(\v2\x1e.smartshippingaggregator.PartyR\trecipient\x12:\n" +
-	"\apackage\x18\x03 \x01(\v2 .smartshippingaggregator.PackageR\apackage\"N\n" +
+	"\apackage\x18\x03 \x01(\v2 .smartshippingaggregator.PackageR\apackage\x12J\n" +
+	"\rdelivery_type\x18\x04 \x01(\x0e2%.smartshippingaggregator.DeliveryTypeR\fdeliveryType\"N\n" +
 	"\x11GetQuotesResponse\x129\n" +
 	"\aoptions\x18\x01 \x03(\v2\x1f.smartshippingaggregator.OptionR\aoptions\"\x83\x01\n" +
 	"\x05Party\x12\x12\n" +
@@ -892,14 +958,15 @@ const file_api_shipping_shipping_proto_rawDesc = "" +
 	"\bwidth_cm\x18\x02 \x01(\x05R\awidthCm\x12\x1b\n" +
 	"\theight_cm\x18\x03 \x01(\x05R\bheightCm\x12$\n" +
 	"\x0etotal_weight_g\x18\x04 \x01(\x05R\ftotalWeightG\x12(\n" +
-	"\x10total_volume_cm3\x18\x05 \x01(\x05R\x0etotalVolumeCm3\"\xa6\x02\n" +
+	"\x10total_volume_cm3\x18\x05 \x01(\x05R\x0etotalVolumeCm3\"\xf2\x02\n" +
 	"\x06Option\x12\x1b\n" +
 	"\toption_id\x18\x01 \x01(\x05R\boptionId\x12'\n" +
 	"\x0fcarrier_product\x18\x02 \x01(\tR\x0ecarrierProduct\x12\x14\n" +
 	"\x05price\x18\x03 \x01(\x05R\x05price\x12\x1a\n" +
 	"\bcurrency\x18\x04 \x01(\tR\bcurrency\x12Y\n" +
 	"\x13delivery_time_slots\x18\x05 \x03(\v2).smartshippingaggregator.DeliveryTimeSlotR\x11deliveryTimeSlots\x12I\n" +
-	"\rpickup_points\x18\x06 \x03(\v2$.smartshippingaggregator.PickupPointR\fpickupPoints\"W\n" +
+	"\rpickup_points\x18\x06 \x03(\v2$.smartshippingaggregator.PickupPointR\fpickupPoints\x12J\n" +
+	"\rdelivery_type\x18\a \x01(\x0e2%.smartshippingaggregator.DeliveryTypeR\fdeliveryType\"W\n" +
 	"\x10DeliveryTimeSlot\x12\x14\n" +
 	"\x05start\x18\x01 \x01(\tR\x05start\x12\x10\n" +
 	"\x03end\x18\x02 \x01(\tR\x03end\x12\x1b\n" +
@@ -915,11 +982,15 @@ const file_api_shipping_shipping_proto_rawDesc = "" +
 	"\vOpeningHour\x12\x1e\n" +
 	"\vday_of_week\x18\x01 \x01(\tR\tdayOfWeek\x12\x14\n" +
 	"\x05opens\x18\x02 \x01(\tR\x05opens\x12\x16\n" +
-	"\x06closes\x18\x03 \x01(\tR\x06closes*I\n" +
-	"\fLocationType\x12\x0f\n" +
-	"\vTYPE_LOCKER\x10\x00\x12\x16\n" +
-	"\x12TYPE_SERVICE_POINT\x10\x01\x12\x10\n" +
-	"\fTYPE_UNKNOWN\x10\x02B=Z;github.com/dzwiedz90/smart-shipping-aggregator/api/shippingb\x06proto3"
+	"\x06closes\x18\x03 \x01(\tR\x06closes*d\n" +
+	"\fDeliveryType\x12\x19\n" +
+	"\x15DELIVERY_TYPE_UNKNOWN\x10\x00\x12\x1f\n" +
+	"\x1bDELIVERY_TYPE_HOME_DELIVERY\x10\x01\x12\x18\n" +
+	"\x14DELIVERY_TYPE_PICKUP\x10\x02*I\n" +
+	"\fLocationType\x12\x10\n" +
+	"\fTYPE_UNKNOWN\x10\x00\x12\x0f\n" +
+	"\vTYPE_LOCKER\x10\x01\x12\x16\n" +
+	"\x12TYPE_SERVICE_POINT\x10\x02B=Z;github.com/dzwiedz90/smart-shipping-aggregator/api/shippingb\x06proto3"
 
 var (
 	file_api_shipping_shipping_proto_rawDescOnce sync.Once
@@ -933,40 +1004,43 @@ func file_api_shipping_shipping_proto_rawDescGZIP() []byte {
 	return file_api_shipping_shipping_proto_rawDescData
 }
 
-var file_api_shipping_shipping_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_api_shipping_shipping_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_api_shipping_shipping_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_api_shipping_shipping_proto_goTypes = []any{
-	(LocationType)(0),         // 0: smartshippingaggregator.LocationType
-	(*GetQuotesRequest)(nil),  // 1: smartshippingaggregator.GetQuotesRequest
-	(*GetQuotesResponse)(nil), // 2: smartshippingaggregator.GetQuotesResponse
-	(*Party)(nil),             // 3: smartshippingaggregator.Party
-	(*Address)(nil),           // 4: smartshippingaggregator.Address
-	(*Package)(nil),           // 5: smartshippingaggregator.Package
-	(*Item)(nil),              // 6: smartshippingaggregator.Item
-	(*Dimensions)(nil),        // 7: smartshippingaggregator.Dimensions
-	(*Option)(nil),            // 8: smartshippingaggregator.Option
-	(*DeliveryTimeSlot)(nil),  // 9: smartshippingaggregator.DeliveryTimeSlot
-	(*PickupPoint)(nil),       // 10: smartshippingaggregator.PickupPoint
-	(*OpeningHour)(nil),       // 11: smartshippingaggregator.OpeningHour
+	(DeliveryType)(0),         // 0: smartshippingaggregator.DeliveryType
+	(LocationType)(0),         // 1: smartshippingaggregator.LocationType
+	(*GetQuotesRequest)(nil),  // 2: smartshippingaggregator.GetQuotesRequest
+	(*GetQuotesResponse)(nil), // 3: smartshippingaggregator.GetQuotesResponse
+	(*Party)(nil),             // 4: smartshippingaggregator.Party
+	(*Address)(nil),           // 5: smartshippingaggregator.Address
+	(*Package)(nil),           // 6: smartshippingaggregator.Package
+	(*Item)(nil),              // 7: smartshippingaggregator.Item
+	(*Dimensions)(nil),        // 8: smartshippingaggregator.Dimensions
+	(*Option)(nil),            // 9: smartshippingaggregator.Option
+	(*DeliveryTimeSlot)(nil),  // 10: smartshippingaggregator.DeliveryTimeSlot
+	(*PickupPoint)(nil),       // 11: smartshippingaggregator.PickupPoint
+	(*OpeningHour)(nil),       // 12: smartshippingaggregator.OpeningHour
 }
 var file_api_shipping_shipping_proto_depIdxs = []int32{
-	3,  // 0: smartshippingaggregator.GetQuotesRequest.sender:type_name -> smartshippingaggregator.Party
-	3,  // 1: smartshippingaggregator.GetQuotesRequest.recipient:type_name -> smartshippingaggregator.Party
-	5,  // 2: smartshippingaggregator.GetQuotesRequest.package:type_name -> smartshippingaggregator.Package
-	8,  // 3: smartshippingaggregator.GetQuotesResponse.options:type_name -> smartshippingaggregator.Option
-	4,  // 4: smartshippingaggregator.Party.address:type_name -> smartshippingaggregator.Address
-	6,  // 5: smartshippingaggregator.Package.items:type_name -> smartshippingaggregator.Item
-	7,  // 6: smartshippingaggregator.Package.dimensions:type_name -> smartshippingaggregator.Dimensions
-	9,  // 7: smartshippingaggregator.Option.delivery_time_slots:type_name -> smartshippingaggregator.DeliveryTimeSlot
-	10, // 8: smartshippingaggregator.Option.pickup_points:type_name -> smartshippingaggregator.PickupPoint
-	4,  // 9: smartshippingaggregator.PickupPoint.address:type_name -> smartshippingaggregator.Address
-	0,  // 10: smartshippingaggregator.PickupPoint.location_type:type_name -> smartshippingaggregator.LocationType
-	11, // 11: smartshippingaggregator.PickupPoint.opening_hours:type_name -> smartshippingaggregator.OpeningHour
-	12, // [12:12] is the sub-list for method output_type
-	12, // [12:12] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	4,  // 0: smartshippingaggregator.GetQuotesRequest.sender:type_name -> smartshippingaggregator.Party
+	4,  // 1: smartshippingaggregator.GetQuotesRequest.recipient:type_name -> smartshippingaggregator.Party
+	6,  // 2: smartshippingaggregator.GetQuotesRequest.package:type_name -> smartshippingaggregator.Package
+	0,  // 3: smartshippingaggregator.GetQuotesRequest.delivery_type:type_name -> smartshippingaggregator.DeliveryType
+	9,  // 4: smartshippingaggregator.GetQuotesResponse.options:type_name -> smartshippingaggregator.Option
+	5,  // 5: smartshippingaggregator.Party.address:type_name -> smartshippingaggregator.Address
+	7,  // 6: smartshippingaggregator.Package.items:type_name -> smartshippingaggregator.Item
+	8,  // 7: smartshippingaggregator.Package.dimensions:type_name -> smartshippingaggregator.Dimensions
+	10, // 8: smartshippingaggregator.Option.delivery_time_slots:type_name -> smartshippingaggregator.DeliveryTimeSlot
+	11, // 9: smartshippingaggregator.Option.pickup_points:type_name -> smartshippingaggregator.PickupPoint
+	0,  // 10: smartshippingaggregator.Option.delivery_type:type_name -> smartshippingaggregator.DeliveryType
+	5,  // 11: smartshippingaggregator.PickupPoint.address:type_name -> smartshippingaggregator.Address
+	1,  // 12: smartshippingaggregator.PickupPoint.location_type:type_name -> smartshippingaggregator.LocationType
+	12, // 13: smartshippingaggregator.PickupPoint.opening_hours:type_name -> smartshippingaggregator.OpeningHour
+	14, // [14:14] is the sub-list for method output_type
+	14, // [14:14] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_api_shipping_shipping_proto_init() }
@@ -979,7 +1053,7 @@ func file_api_shipping_shipping_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_shipping_shipping_proto_rawDesc), len(file_api_shipping_shipping_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   0,

@@ -3,10 +3,19 @@ package domain
 import "time"
 
 type GetQuotesRequest struct {
-	Sender    *Party
-	Recipient *Party
-	Package   *Package
+	Sender       *Party
+	Recipient    *Party
+	Package      *Package
+	DeliveryType *DeliveryType
 }
+
+type DeliveryType string
+
+const (
+	DELIVERY_TYPE_UNKNOWN       DeliveryType = "DELIVERY_TYPE_UNKNOWN"
+	DELIVERY_TYPE_HOME_DELIVERY DeliveryType = "DELIVERY_TYPE_HOME_DELIVERY"
+	DELIVERY_TYPE_PICKUP        DeliveryType = "DELIVERY_TYPE_PICKUP"
+)
 
 type Party struct {
 	Name    string
@@ -61,6 +70,7 @@ type Option struct {
 	Currency          string
 	DeliveryTimeSlots []*DeliveryTimeSlot
 	PickupPoints      []*PickupPoint
+	DeliveryType      *DeliveryType
 }
 
 type DeliveryTimeSlot struct {
@@ -82,9 +92,9 @@ type PickupPoint struct {
 type LocationType int32
 
 const (
-	LocationTypeLocker       LocationType = 0
-	LocationTypeServicePoint LocationType = 1
-	LocationTypeUnknown      LocationType = 2
+	LOCATION_TYPE_UNKNOWN       LocationType = 0
+	LOCATION_TYPE_LOCKER        LocationType = 1
+	LOCATION_TYPE_SERVICE_POINT LocationType = 2
 )
 
 type OpeningHours struct {

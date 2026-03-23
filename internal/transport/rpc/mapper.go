@@ -24,6 +24,8 @@ func mapProtoToDomain(pbReq *pb.GetQuotesRequest) *domain.GetQuotesRequest {
 		})
 	}
 
+	dt := domain.DeliveryType(pbReq.GetDeliveryType().String())
+
 	return &domain.GetQuotesRequest{
 		Sender: &domain.Party{
 			Name: pbReq.GetSender().GetName(),
@@ -63,6 +65,7 @@ func mapProtoToDomain(pbReq *pb.GetQuotesRequest) *domain.GetQuotesRequest {
 				TotalVolumeCm3: pbReq.GetPackage().GetDimensions().GetTotalVolumeCm3(),
 			},
 		},
+		DeliveryType: &dt,
 	}
 }
 
@@ -84,6 +87,7 @@ func mapDomainToProto(resp *domain.GetQuotesResponse) (*pb.GetQuotesResponse, er
 			Currency:          option.Currency,
 			DeliveryTimeSlots: parseDeliveryTimeslots(option.DeliveryTimeSlots),
 			PickupPoints:      parsePickupPoints(option.PickupPoints),
+			DeliveryType:      mapDeliveryType(option.DeliveryType),
 		})
 	}
 
@@ -173,4 +177,15 @@ func parseOpeningHours(openingHours []*domain.OpeningHours) []*pb.OpeningHour {
 	}
 
 	return pbOpeningHours
+}
+
+func mapDeliveryType(dt *domain.DeliveryType) pb.DeliveryType {
+	switch *dt {
+	case domain.DELIVERY_TYPE_HOME_DELIVERY:
+		return pb.DeliveryType_DELIVERY_TYPE_HOME_DELIVERY
+	case domain.DELIVERY_TYPE_PICKUP:
+		return pb.DeliveryType_DELIVERY_TYPE_PICKUP
+	default:
+		return 0
+	}
 }
