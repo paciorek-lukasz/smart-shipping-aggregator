@@ -7,7 +7,6 @@ import (
 )
 
 type Provider interface {
-	GetQuotesHome(ctx context.Context, req *domain.GetQuotesRequest) (*domain.GetQuotesResponse, error)
-	GetQuotesPickup(ctx context.Context, req *domain.GetQuotesRequest) (*domain.GetQuotesResponse, error)
+	GetQuotes(ctx context.Context, req *domain.GetQuotesRequest) (*domain.GetQuotesResponse, error)
 	Name() string
 }
