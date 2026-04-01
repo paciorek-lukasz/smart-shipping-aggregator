@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
 	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/dhl/dhlclient"
@@ -32,6 +31,7 @@ func (s *Service) sendPickupRequest(ctx context.Context, req *domain.GetQuotesRe
 		SearchRadius:   s.searchRadius,
 		LocationsType:  mapLocationTypes(req.LocationTypes),
 	}
+
 	apiCtx := context.WithValue(ctx, nil, "get_quotes_pickup")
 
 	resp, err := s.apiClient.GetQuotesPickup(apiCtx, apiReq)
@@ -60,25 +60,6 @@ func (s *Service) sendPickupRequest(ctx context.Context, req *domain.GetQuotesRe
 				PickupPoints:      locations,
 				DeliveryType:      domain.DELIVERY_TYPE_PICKUP,
 			},
-		},
-	}, nil
-}
-
-func parseTimeslots(start, end string) ([]*domain.DeliveryTimeSlot, error) {
-	s, err := time.Parse(timeLayout, start)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse start timeslot: %w", err)
-	}
-
-	e, err := time.Parse(timeLayout, end)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse end timeslot: %w", err)
-	}
-
-	return []*domain.DeliveryTimeSlot{
-		{
-			Start: s,
-			End:   e,
 		},
 	}, nil
 }
