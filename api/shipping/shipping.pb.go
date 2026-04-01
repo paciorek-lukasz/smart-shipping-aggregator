@@ -125,6 +125,7 @@ type GetQuotesRequest struct {
 	Recipient     *Party                 `protobuf:"bytes,2,opt,name=recipient,proto3" json:"recipient,omitempty"`
 	Package       *Package               `protobuf:"bytes,3,opt,name=package,proto3" json:"package,omitempty"`
 	DeliveryType  DeliveryType           `protobuf:"varint,4,opt,name=delivery_type,json=deliveryType,proto3,enum=smartshippingaggregator.DeliveryType" json:"delivery_type,omitempty"`
+	LocationTypes []LocationType         `protobuf:"varint,5,rep,packed,name=location_types,json=locationTypes,proto3,enum=smartshippingaggregator.LocationType" json:"location_types,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -185,6 +186,13 @@ func (x *GetQuotesRequest) GetDeliveryType() DeliveryType {
 		return x.DeliveryType
 	}
 	return DeliveryType_DELIVERY_TYPE_UNKNOWN
+}
+
+func (x *GetQuotesRequest) GetLocationTypes() []LocationType {
+	if x != nil {
+		return x.LocationTypes
+	}
+	return nil
 }
 
 type GetQuotesResponse struct {
@@ -917,12 +925,13 @@ var File_api_shipping_shipping_proto protoreflect.FileDescriptor
 
 const file_api_shipping_shipping_proto_rawDesc = "" +
 	"\n" +
-	"\x1bapi/shipping/shipping.proto\x12\x17smartshippingaggregator\"\x90\x02\n" +
+	"\x1bapi/shipping/shipping.proto\x12\x17smartshippingaggregator\"\xde\x02\n" +
 	"\x10GetQuotesRequest\x126\n" +
 	"\x06sender\x18\x01 \x01(\v2\x1e.smartshippingaggregator.PartyR\x06sender\x12<\n" +
 	"\trecipient\x18\x02 \x01(\v2\x1e.smartshippingaggregator.PartyR\trecipient\x12:\n" +
 	"\apackage\x18\x03 \x01(\v2 .smartshippingaggregator.PackageR\apackage\x12J\n" +
-	"\rdelivery_type\x18\x04 \x01(\x0e2%.smartshippingaggregator.DeliveryTypeR\fdeliveryType\"N\n" +
+	"\rdelivery_type\x18\x04 \x01(\x0e2%.smartshippingaggregator.DeliveryTypeR\fdeliveryType\x12L\n" +
+	"\x0elocation_types\x18\x05 \x03(\x0e2%.smartshippingaggregator.LocationTypeR\rlocationTypes\"N\n" +
 	"\x11GetQuotesResponse\x129\n" +
 	"\aoptions\x18\x01 \x03(\v2\x1f.smartshippingaggregator.OptionR\aoptions\"\x83\x01\n" +
 	"\x05Party\x12\x12\n" +
@@ -1026,21 +1035,22 @@ var file_api_shipping_shipping_proto_depIdxs = []int32{
 	4,  // 1: smartshippingaggregator.GetQuotesRequest.recipient:type_name -> smartshippingaggregator.Party
 	6,  // 2: smartshippingaggregator.GetQuotesRequest.package:type_name -> smartshippingaggregator.Package
 	0,  // 3: smartshippingaggregator.GetQuotesRequest.delivery_type:type_name -> smartshippingaggregator.DeliveryType
-	9,  // 4: smartshippingaggregator.GetQuotesResponse.options:type_name -> smartshippingaggregator.Option
-	5,  // 5: smartshippingaggregator.Party.address:type_name -> smartshippingaggregator.Address
-	7,  // 6: smartshippingaggregator.Package.items:type_name -> smartshippingaggregator.Item
-	8,  // 7: smartshippingaggregator.Package.dimensions:type_name -> smartshippingaggregator.Dimensions
-	10, // 8: smartshippingaggregator.Option.delivery_time_slots:type_name -> smartshippingaggregator.DeliveryTimeSlot
-	11, // 9: smartshippingaggregator.Option.pickup_points:type_name -> smartshippingaggregator.PickupPoint
-	0,  // 10: smartshippingaggregator.Option.delivery_type:type_name -> smartshippingaggregator.DeliveryType
-	5,  // 11: smartshippingaggregator.PickupPoint.address:type_name -> smartshippingaggregator.Address
-	1,  // 12: smartshippingaggregator.PickupPoint.location_type:type_name -> smartshippingaggregator.LocationType
-	12, // 13: smartshippingaggregator.PickupPoint.opening_hours:type_name -> smartshippingaggregator.OpeningHour
-	14, // [14:14] is the sub-list for method output_type
-	14, // [14:14] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	1,  // 4: smartshippingaggregator.GetQuotesRequest.location_types:type_name -> smartshippingaggregator.LocationType
+	9,  // 5: smartshippingaggregator.GetQuotesResponse.options:type_name -> smartshippingaggregator.Option
+	5,  // 6: smartshippingaggregator.Party.address:type_name -> smartshippingaggregator.Address
+	7,  // 7: smartshippingaggregator.Package.items:type_name -> smartshippingaggregator.Item
+	8,  // 8: smartshippingaggregator.Package.dimensions:type_name -> smartshippingaggregator.Dimensions
+	10, // 9: smartshippingaggregator.Option.delivery_time_slots:type_name -> smartshippingaggregator.DeliveryTimeSlot
+	11, // 10: smartshippingaggregator.Option.pickup_points:type_name -> smartshippingaggregator.PickupPoint
+	0,  // 11: smartshippingaggregator.Option.delivery_type:type_name -> smartshippingaggregator.DeliveryType
+	5,  // 12: smartshippingaggregator.PickupPoint.address:type_name -> smartshippingaggregator.Address
+	1,  // 13: smartshippingaggregator.PickupPoint.location_type:type_name -> smartshippingaggregator.LocationType
+	12, // 14: smartshippingaggregator.PickupPoint.opening_hours:type_name -> smartshippingaggregator.OpeningHour
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_api_shipping_shipping_proto_init() }

@@ -3,10 +3,11 @@ package domain
 import "time"
 
 type GetQuotesRequest struct {
-	Sender       *Party
-	Recipient    *Party
-	Package      *Package
-	DeliveryType *DeliveryType
+	Sender        *Party
+	Recipient     *Party
+	Package       *Package
+	DeliveryType  DeliveryType
+	LocationTypes []LocationType
 }
 
 type DeliveryType string
@@ -70,7 +71,7 @@ type Option struct {
 	Currency          string
 	DeliveryTimeSlots []*DeliveryTimeSlot
 	PickupPoints      []*PickupPoint
-	DeliveryType      *DeliveryType
+	DeliveryType      DeliveryType
 }
 
 type DeliveryTimeSlot struct {
@@ -84,7 +85,7 @@ type PickupPoint struct {
 	Name          string
 	Address       *Address
 	Phone         string
-	LocationType  *LocationType
+	LocationType  LocationType
 	OpeningHours  []*OpeningHours
 	IsOperational bool
 }

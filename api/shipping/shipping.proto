@@ -9,6 +9,7 @@ message GetQuotesRequest {
     Party recipient = 2;
     Package package = 3;
     DeliveryType delivery_type = 4;
+    repeated LocationType location_types = 5;
 }
 
 enum DeliveryType {

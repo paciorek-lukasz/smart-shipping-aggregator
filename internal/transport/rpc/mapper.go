@@ -65,7 +65,8 @@ func mapProtoToDomain(pbReq *pb.GetQuotesRequest) *domain.GetQuotesRequest {
 				TotalVolumeCm3: pbReq.GetPackage().GetDimensions().GetTotalVolumeCm3(),
 			},
 		},
-		DeliveryType: &dt,
+		DeliveryType:  dt,
+		LocationTypes: parseLocationTypes(pbReq.GetLocationTypes()),
 	}
 }
 
@@ -140,8 +141,8 @@ func parsePickupPoints(pickupPoints []*domain.PickupPoint) []*pb.PickupPoint {
 		}
 
 		var locType pb.LocationType
-		if pp.LocationType != nil {
-			locType = pb.LocationType(*pp.LocationType)
+		if pp.LocationType != 0 {
+			locType = pb.LocationType(pp.LocationType)
 		}
 
 		pbPickupPoints = append(pbPickupPoints, &pb.PickupPoint{
@@ -179,8 +180,8 @@ func parseOpeningHours(openingHours []*domain.OpeningHours) []*pb.OpeningHour {
 	return pbOpeningHours
 }
 
-func mapDeliveryType(dt *domain.DeliveryType) pb.DeliveryType {
-	switch *dt {
+func mapDeliveryType(dt domain.DeliveryType) pb.DeliveryType {
+	switch dt {
 	case domain.DELIVERY_TYPE_HOME_DELIVERY:
 		return pb.DeliveryType_DELIVERY_TYPE_HOME_DELIVERY
 	case domain.DELIVERY_TYPE_PICKUP:
@@ -188,4 +189,21 @@ func mapDeliveryType(dt *domain.DeliveryType) pb.DeliveryType {
 	default:
 		return 0
 	}
+}
+
+func parseLocationTypes(types []pb.LocationType) []domain.LocationType {
+	var result []domain.LocationType
+
+	for _, t := range types {
+		if t == pb.LocationType_TYPE_LOCKER {
+			result = append(result, domain.LOCATION_TYPE_LOCKER)
+			continue
+		}
+		if t == pb.LocationType_TYPE_SERVICE_POINT {
+			result = append(result, domain.LOCATION_TYPE_SERVICE_POINT)
+			continue
+		}
+	}
+
+	return result
 }

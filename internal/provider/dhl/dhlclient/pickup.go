@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	getQuotesPickupEndpoint = "/api/v1/mock/getQuotesHome"
+	getQuotesPickupEndpoint = "/api/v1/mock/getQuotesPickup"
 )
 
 func (c *Client) GetQuotesPickup(ctx context.Context, req *DhlPickupApiRequest) (*DhlPickupApiResponse, error) {

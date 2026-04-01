@@ -32,6 +32,7 @@ type DhlPickupApiRequest struct {
 type DhlLocationType string
 
 const (
+	DHL_LOCATION_TYPE_ALL           DhlLocationType = "all"
 	DHL_LOCATION_TYPE_POSTOFFICE    DhlLocationType = "postoffice"
 	DHL_LOCATION_TYPE_LOCKER        DhlLocationType = "locker"
 	DHL_LOCATION_TYPE_SERVICE_POINT DhlLocationType = "servicepoint"
@@ -46,20 +47,26 @@ type DhlPickupApiResponse struct {
 }
 
 type Location struct {
-	Id          string     `json:"id"`
-	Name        string     `json:"name"`
-	AddressLine string     `json:"address_line"`
-	Type        string     `json:"type"`
-	OpenTimes   *OpenTimes `json:"open_times"`
-	IsAvailable bool       `json:"is_available"`
+	Id          string       `json:"id"`
+	Name        string       `json:"name"`
+	City        string       `json:"city"`
+	PostalCode  string       `json:"postal_code"`
+	Country     string       `json:"country"`
+	Latitude    string       `json:"latitude"`
+	Longitude   string       `json:"longitude"`
+	AddressLine string       `json:"address_line"`
+	Type        string       `json:"type"`
+	OpenTimes   []*OpenTimes `json:"open_times"`
+	IsAvailable bool         `json:"is_available"`
 }
 
+const (
+	DhlLocTypeLocker       = "locker"
+	DhlLocTypeServicePoint = "service-point"
+)
+
 type OpenTimes struct {
-	Monday    string `json:"Monday"`
-	Tuesday   string `json:"Tuesday"`
-	Wednesday string `json:"Wednesday"`
-	Thursday  string `json:"Thursday"`
-	Friday    string `json:"Friday"`
-	Saturday  string `json:"Saturday"`
-	Sunday    string `json:"Sunday"`
+	DayOfWeek string `json:"day_of_week"`
+	Opens     string `json:"opens"`
+	Closes    string `json:"closes"`
 }
