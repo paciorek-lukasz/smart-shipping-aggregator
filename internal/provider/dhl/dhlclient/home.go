@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+
+	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
 )
 
 const (
@@ -32,7 +34,7 @@ func (c *Client) GetQuotesHome(ctx context.Context, req *DhlHomeApiRequest) (*Dh
 	}
 
 	err = c.cb.Execute(func() error {
-		dhlRes, err := c.simulateApiCall(ctx, apiReq)
+		dhlRes, err := c.simulateApiCall(ctx, apiReq, domain.DELIVERY_TYPE_HOME_DELIVERY)
 		if err != nil {
 			return err
 		}
