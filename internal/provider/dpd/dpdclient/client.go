@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
 	"github.com/dzwiedz90/smart-shipping-aggregator/internal/resilience"
 )
 
@@ -23,14 +24,14 @@ type Client struct {
 
 func New(cb *resilience.CircuitBreaker) *Client {
 	return &Client{
-		name: "DHL",
+		name: "DPD",
 		cb:   cb,
 	}
 }
 
 func (c *Client) Name() string { return c.name }
 
-func (c *Client) simulateApiCall(ctx context.Context, req *http.Request) ([]byte, error) {
+func (c *Client) simulateApiCall(ctx context.Context, req *http.Request, deliveryType domain.DeliveryType) ([]byte, error) {
 	delay := c.minDelay + time.Duration(rand.Intn(int(c.maxDelay-c.minDelay)))
 
 	select {
@@ -43,7 +44,46 @@ func (c *Client) simulateApiCall(ctx context.Context, req *http.Request) ([]byte
 		return []byte{}, errors.New("internal server error (500)")
 	}
 
-	respBytes, err := json.Marshal(&DhlHomeApiResponse{})
+	var respBytes []byte
+	var err error
+	if deliveryType == domain.DELIVERY_TYPE_HOME_DELIVERY {
+		respBytes, err = json.Marshal(&DpdHomeApiResponse{
+			Earliest: "2026-04-11T08:00:00Z",
+			Latest:   "2026-04-13T17:00:00Z",
+			Price:    1099,
+			Currency: "PLN",
+		})
+	} else {
+		respBytes, err = json.Marshal(&DpdPickupApiResponse{
+			Earliest: "2026-04-10T09:00:00Z",
+			Latest:   "2026-04-12T19:00:00Z",
+			Price:    799,
+			Currency: "PLN",
+			Locations: []*DpdLocation{
+				{
+					Id:          "DPD-PS-001",
+					Name:        "DPD Parcel Shop",
+					City:        "Kraków",
+					PostalCode:  "30-001",
+					Country:     "PL",
+					Latitude:    "50.0647",
+					Longitude:   "19.9450",
+					AddressLine: "ul. Floriańska 10",
+					Type:        "packageshop",
+					OpenTimes: []*DpdOpenTimes{
+						{DayOfWeek: "MONDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "TUESDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "WEDNESDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "THURSDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "FRIDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "SATURDAY", Opens: "08:00", Closes: "18:00"},
+						{DayOfWeek: "SUNDAY", Opens: "", Closes: ""},
+					},
+					IsAvailable: true,
+				},
+			},
+		})
+	}
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse response mock: %w", err)
 	}
