@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/dhl/dhlclient"
+	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/dhl/client"
 )
 
 const (
@@ -15,8 +15,8 @@ const (
 )
 
 type apiClient interface {
-	GetQuotesHome(ctx context.Context, req *dhlclient.DhlHomeApiRequest) (*dhlclient.DhlHomeApiResponse, error)
-	GetQuotesPickup(ctx context.Context, req *dhlclient.DhlPickupApiRequest) (*dhlclient.DhlPickupApiResponse, error)
+	GetQuotesHome(ctx context.Context, req *client.DhlHomeApiRequest) (*client.DhlHomeApiResponse, error)
+	GetQuotesPickup(ctx context.Context, req *client.DhlPickupApiRequest) (*client.DhlPickupApiResponse, error)
 }
 
 type Service struct {
@@ -42,15 +42,15 @@ func (s *Service) GetQuotes(ctx context.Context, req *domain.GetQuotesRequest) (
 	senderAddress := req.Sender.Address
 	recipientAddress := req.Recipient.Address
 
-	apiReq := &dhlclient.DhlHomeApiRequest{
+	apiReq := &client.DhlHomeApiRequest{
 		DhlApiKey: s.apiKey,
-		SenderAddress: &dhlclient.Party{
+		SenderAddress: &client.Party{
 			Address:    senderAddress.Address,
 			PostalCode: senderAddress.PostalCode,
 			City:       senderAddress.City,
 			Country:    senderAddress.Country,
 		},
-		RecipientAddress: &dhlclient.Party{
+		RecipientAddress: &client.Party{
 			Address:    recipientAddress.Address,
 			PostalCode: recipientAddress.PostalCode,
 			City:       recipientAddress.City,

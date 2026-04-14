@@ -1,4 +1,4 @@
-package dhlclient
+package client
 
 import (
 	"bytes"

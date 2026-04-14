@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/dpd/dpdclient"
+	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/dpd/client"
 )
 
 const (
@@ -15,8 +15,8 @@ const (
 )
 
 type apiClient interface {
-	GetQuotesHome(ctx context.Context, req *dpdclient.DpdHomeApiRequest) (*dpdclient.DpdHomeApiResponse, error)
-	GetQuotesPickup(ctx context.Context, req *dpdclient.DpdPickupApiRequest) (*dpdclient.DpdPickupApiResponse, error)
+	GetQuotesHome(ctx context.Context, req *client.DpdHomeApiRequest) (*client.DpdHomeApiResponse, error)
+	GetQuotesPickup(ctx context.Context, req *client.DpdPickupApiRequest) (*client.DpdPickupApiResponse, error)
 }
 
 type Service struct {
@@ -42,14 +42,14 @@ func (s *Service) GetQuotes(ctx context.Context, req *domain.GetQuotesRequest) (
 	senderAddress := req.Sender.Address
 	recipientAddress := req.Recipient.Address
 
-	apiReq := &dpdclient.DpdHomeApiRequest{
-		SenderAddress: &dpdclient.DpdParty{
+	apiReq := &client.DpdHomeApiRequest{
+		SenderAddress: &client.DpdParty{
 			Address:    senderAddress.Address,
 			PostalCode: senderAddress.PostalCode,
 			City:       senderAddress.City,
 			Country:    senderAddress.Country,
 		},
-		RecipientAddress: &dpdclient.DpdParty{
+		RecipientAddress: &client.DpdParty{
 			Address:    recipientAddress.Address,
 			PostalCode: recipientAddress.PostalCode,
 			City:       recipientAddress.City,

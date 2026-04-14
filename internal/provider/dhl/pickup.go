@@ -6,22 +6,22 @@ import (
 	"fmt"
 
 	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/dhl/dhlclient"
+	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/dhl/client"
 )
 
 func (s *Service) sendPickupRequest(ctx context.Context, req *domain.GetQuotesRequest) (*domain.GetQuotesResponse, error) {
 	senderAddress := req.Sender.Address
 	recipientAddress := req.Recipient.Address
 
-	apiReq := &dhlclient.DhlPickupApiRequest{
+	apiReq := &client.DhlPickupApiRequest{
 		DhlApiKey: s.apiKey,
-		SenderAddress: &dhlclient.Party{
+		SenderAddress: &client.Party{
 			Address:    senderAddress.Address,
 			PostalCode: senderAddress.PostalCode,
 			City:       senderAddress.City,
 			Country:    senderAddress.Country,
 		},
-		RecipientAddress: &dhlclient.Party{
+		RecipientAddress: &client.Party{
 			Address:    recipientAddress.Address,
 			PostalCode: recipientAddress.PostalCode,
 			City:       recipientAddress.City,
@@ -64,7 +64,7 @@ func (s *Service) sendPickupRequest(ctx context.Context, req *domain.GetQuotesRe
 	}, nil
 }
 
-func parsePickupPoints(locs []*dhlclient.Location) ([]*domain.PickupPoint, error) {
+func parsePickupPoints(locs []*client.Location) ([]*domain.PickupPoint, error) {
 	var result []*domain.PickupPoint
 
 	for _, loc := range locs {
@@ -95,16 +95,16 @@ func parsePickupPoints(locs []*dhlclient.Location) ([]*domain.PickupPoint, error
 
 func mapDhlLocType(dhlLocType string) (domain.LocationType, error) {
 	switch dhlLocType {
-	case dhlclient.DhlLocTypeLocker:
+	case client.DhlLocTypeLocker:
 		return domain.LOCATION_TYPE_LOCKER, nil
-	case dhlclient.DhlLocTypeServicePoint:
+	case client.DhlLocTypeServicePoint:
 		return domain.LOCATION_TYPE_SERVICE_POINT, nil
 	}
 
 	return 0, errors.New("no matching location type")
 }
 
-func parseOpeningHours(openingHours []*dhlclient.OpenTimes) []*domain.OpeningHours {
+func parseOpeningHours(openingHours []*client.OpenTimes) []*domain.OpeningHours {
 	var result []*domain.OpeningHours
 
 	for _, h := range openingHours {
@@ -118,21 +118,21 @@ func parseOpeningHours(openingHours []*dhlclient.OpenTimes) []*domain.OpeningHou
 	return result
 }
 
-func mapLocationTypes(types []domain.LocationType) []dhlclient.DhlLocationType {
-	var result []dhlclient.DhlLocationType
+func mapLocationTypes(types []domain.LocationType) []client.DhlLocationType {
+	var result []client.DhlLocationType
 
 	for _, t := range types {
 		if t == domain.LOCATION_TYPE_LOCKER {
-			result = append(result, dhlclient.DHL_LOCATION_TYPE_LOCKER)
+			result = append(result, client.DHL_LOCATION_TYPE_LOCKER)
 		}
 		if t == domain.LOCATION_TYPE_SERVICE_POINT {
-			result = append(result, dhlclient.DHL_LOCATION_TYPE_POSTOFFICE)
-			result = append(result, dhlclient.DHL_LOCATION_TYPE_SERVICE_POINT)
+			result = append(result, client.DHL_LOCATION_TYPE_POSTOFFICE)
+			result = append(result, client.DHL_LOCATION_TYPE_SERVICE_POINT)
 		}
 	}
 
 	if len(result) == 0 {
-		result = append(result, dhlclient.DHL_LOCATION_TYPE_ALL)
+		result = append(result, client.DHL_LOCATION_TYPE_ALL)
 	}
 
 	return result

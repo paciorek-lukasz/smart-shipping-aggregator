@@ -6,21 +6,21 @@ import (
 	"fmt"
 
 	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/dpd/dpdclient"
+	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/dpd/client"
 )
 
 func (s *Service) sendPickupRequest(ctx context.Context, req *domain.GetQuotesRequest) (*domain.GetQuotesResponse, error) {
 	senderAddress := req.Sender.Address
 	recipientAddress := req.Recipient.Address
 
-	apiReq := &dpdclient.DpdPickupApiRequest{
-		SenderAddress: &dpdclient.DpdParty{
+	apiReq := &client.DpdPickupApiRequest{
+		SenderAddress: &client.DpdParty{
 			Address:    senderAddress.Address,
 			PostalCode: senderAddress.PostalCode,
 			City:       senderAddress.City,
 			Country:    senderAddress.Country,
 		},
-		RecipientAddress: &dpdclient.DpdParty{
+		RecipientAddress: &client.DpdParty{
 			Address:    recipientAddress.Address,
 			PostalCode: recipientAddress.PostalCode,
 			City:       recipientAddress.City,
@@ -62,7 +62,7 @@ func (s *Service) sendPickupRequest(ctx context.Context, req *domain.GetQuotesRe
 	}, nil
 }
 
-func parsePickupPoints(locs []*dpdclient.DpdLocation) ([]*domain.PickupPoint, error) {
+func parsePickupPoints(locs []*client.DpdLocation) ([]*domain.PickupPoint, error) {
 	var result []*domain.PickupPoint
 
 	for _, loc := range locs {
@@ -93,16 +93,16 @@ func parsePickupPoints(locs []*dpdclient.DpdLocation) ([]*domain.PickupPoint, er
 
 func mapDpdLocType(dpdLocType string) (domain.LocationType, error) {
 	switch dpdLocType {
-	case dpdclient.DpdLocTypeLocker:
+	case client.DpdLocTypeLocker:
 		return domain.LOCATION_TYPE_LOCKER, nil
-	case dpdclient.DpdLocTypePackageShop:
+	case client.DpdLocTypePackageShop:
 		return domain.LOCATION_TYPE_SERVICE_POINT, nil
 	}
 
 	return 0, errors.New("no matching location type")
 }
 
-func parseOpeningHours(openingHours []*dpdclient.DpdOpenTimes) []*domain.OpeningHours {
+func parseOpeningHours(openingHours []*client.DpdOpenTimes) []*domain.OpeningHours {
 	var result []*domain.OpeningHours
 
 	for _, h := range openingHours {
@@ -116,21 +116,21 @@ func parseOpeningHours(openingHours []*dpdclient.DpdOpenTimes) []*domain.Opening
 	return result
 }
 
-func mapLocationTypes(types []domain.LocationType) []dpdclient.DpdLocationType {
-	var result []dpdclient.DpdLocationType
+func mapLocationTypes(types []domain.LocationType) []client.DpdLocationType {
+	var result []client.DpdLocationType
 
 	for _, t := range types {
 		if t == domain.LOCATION_TYPE_LOCKER {
-			result = append(result, dpdclient.DPD_LOCATION_TYPE_LOCKER)
+			result = append(result, client.DPD_LOCATION_TYPE_LOCKER)
 		}
 		if t == domain.LOCATION_TYPE_SERVICE_POINT {
-			result = append(result, dpdclient.DPD_LOCATION_TYPE_PACKAGE_SHOP)
-			result = append(result, dpdclient.DPD_LOCATION_TYPE_PARCEL_BOX)
+			result = append(result, client.DPD_LOCATION_TYPE_PACKAGE_SHOP)
+			result = append(result, client.DPD_LOCATION_TYPE_PARCEL_BOX)
 		}
 	}
 
 	if len(result) == 0 {
-		result = append(result, dpdclient.DPD_LOCATION_TYPE_ALL)
+		result = append(result, client.DPD_LOCATION_TYPE_ALL)
 	}
 
 	return result

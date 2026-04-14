@@ -1,4 +1,4 @@
-package dhlclient
+package client
 
 import (
 	"context"
@@ -24,7 +24,7 @@ type Client struct {
 
 func New(cb *resilience.CircuitBreaker) *Client {
 	return &Client{
-		name: "DHL",
+		name: "DPD",
 		cb:   cb,
 	}
 }
@@ -47,36 +47,36 @@ func (c *Client) simulateApiCall(ctx context.Context, req *http.Request, deliver
 	var respBytes []byte
 	var err error
 	if deliveryType == domain.DELIVERY_TYPE_HOME_DELIVERY {
-		respBytes, err = json.Marshal(&DhlHomeApiResponse{
-			Earliest: "2026-04-10T09:00:00Z",
-			Latest:   "2026-04-12T18:00:00Z",
-			Price:    1299,
+		respBytes, err = json.Marshal(&DpdHomeApiResponse{
+			Earliest: "2026-04-11T08:00:00Z",
+			Latest:   "2026-04-13T17:00:00Z",
+			Price:    1099,
 			Currency: "PLN",
 		})
 	} else {
-		respBytes, err = json.Marshal(&DhlPickupApiResponse{
-			Earliest: "2026-04-09T10:00:00Z",
-			Latest:   "2026-04-11T20:00:00Z",
-			Price:    899,
+		respBytes, err = json.Marshal(&DpdPickupApiResponse{
+			Earliest: "2026-04-10T09:00:00Z",
+			Latest:   "2026-04-12T19:00:00Z",
+			Price:    799,
 			Currency: "PLN",
-			Locations: []*Location{
+			Locations: []*DpdLocation{
 				{
-					Id:          "DHL-PO-001",
-					Name:        "DHL Punkt Partnerski",
-					City:        "Warszawa",
-					PostalCode:  "00-001",
+					Id:          "DPD-PS-001",
+					Name:        "DPD Parcel Shop",
+					City:        "Kraków",
+					PostalCode:  "30-001",
 					Country:     "PL",
-					Latitude:    "52.2297",
-					Longitude:   "21.0122",
-					AddressLine: "ul. Marszałkowska 1",
-					Type:        "postoffice",
-					OpenTimes: []*OpenTimes{
-						{DayOfWeek: "MONDAY", Opens: "08:00", Closes: "20:00"},
-						{DayOfWeek: "TUESDAY", Opens: "08:00", Closes: "20:00"},
-						{DayOfWeek: "WEDNESDAY", Opens: "08:00", Closes: "20:00"},
-						{DayOfWeek: "THURSDAY", Opens: "08:00", Closes: "20:00"},
-						{DayOfWeek: "FRIDAY", Opens: "08:00", Closes: "20:00"},
-						{DayOfWeek: "SATURDAY", Opens: "09:00", Closes: "16:00"},
+					Latitude:    "50.0647",
+					Longitude:   "19.9450",
+					AddressLine: "ul. Floriańska 10",
+					Type:        "packageshop",
+					OpenTimes: []*DpdOpenTimes{
+						{DayOfWeek: "MONDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "TUESDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "WEDNESDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "THURSDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "FRIDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "SATURDAY", Opens: "08:00", Closes: "18:00"},
 						{DayOfWeek: "SUNDAY", Opens: "", Closes: ""},
 					},
 					IsAvailable: true,

@@ -1,4 +1,4 @@
-package dpdclient
+package client
 
 type DpdHomeApiRequest struct {
 	DpdApiKey        string    `json:"api_key"`

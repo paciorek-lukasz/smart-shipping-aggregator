@@ -1,4 +1,4 @@
-package dhlclient
+package client
 
 type DhlHomeApiRequest struct {
 	DhlApiKey        string `json:"api_key"`
