@@ -22,14 +22,16 @@ type Client struct {
 	maxDelay    time.Duration
 }
 
-func New(cb *resilience.CircuitBreaker) *Client {
+func New(cb *resilience.CircuitBreaker, baseURL string, failureRate float64, minDelay, maxDelay time.Duration) *Client {
 	return &Client{
-		name: "UPS",
-		cb:   cb,
+		name:        "UPS",
+		cb:          cb,
+		baseUrl:     baseURL,
+		failureRate: failureRate,
+		minDelay:    minDelay,
+		maxDelay:    maxDelay,
 	}
 }
-
-func (c *Client) Name() string { return c.name }
 
 func (c *Client) simulateApiCall(ctx context.Context, req *http.Request, deliveryType domain.DeliveryType) ([]byte, error) {
 	delay := c.minDelay + time.Duration(rand.Intn(int(c.maxDelay-c.minDelay)))

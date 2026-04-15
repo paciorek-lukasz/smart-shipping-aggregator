@@ -26,12 +26,17 @@ type Service struct {
 	searchAreaKm int32
 }
 
-func NewService(apiClient apiClient, depotsLimit, searchAreaKm int32) *Service {
+func NewService(apiClient apiClient, apiKey string, depotsLimit, searchAreaKm int32) *Service {
 	return &Service{
 		apiClient:    apiClient,
+		authToken:    apiKey,
 		depotsLimit:  depotsLimit,
 		searchAreaKm: searchAreaKm,
 	}
+}
+
+func (s *Service) Name() string {
+	return carrierName
 }
 
 func (s *Service) GetQuotes(ctx context.Context, req *domain.GetQuotesRequest) (*domain.GetQuotesResponse, error) {
