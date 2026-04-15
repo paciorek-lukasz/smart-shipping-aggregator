@@ -11,7 +11,7 @@ import (
 )
 
 type ShippingService interface {
-	GetQuotes(ctx context.Context, req *domain.GetQuotesRequest) (*domain.GetQuotesResponse, error)
+	FetchQuotes(ctx context.Context, req *domain.GetQuotesRequest) *domain.GetOptionsResponse
 }
 
 type Handler struct {
@@ -30,10 +30,7 @@ func (h *Handler) GetQuotes(ctx context.Context, req *pb.GetQuotesRequest) (*pb.
 
 	domainReq := mapProtoToDomain(req)
 
-	quotes, err := h.service.GetQuotes(ctx, domainReq)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to fetch quotes: %v", err)
-	}
+	quotes := h.service.FetchQuotes(ctx, domainReq)
 
 	mapped, err := mapDomainToProto(quotes)
 	if err != nil {

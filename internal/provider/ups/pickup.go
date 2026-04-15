@@ -50,15 +50,13 @@ func (s *Service) sendPickupRequest(ctx context.Context, req *domain.GetQuotesRe
 	}
 
 	return &domain.GetQuotesResponse{
-		Options: []*domain.Option{
-			{
-				CarrierProduct:    carrierName,
-				Price:             resp.FeeAmount,
-				Currency:          resp.FeeCurrency,
-				DeliveryTimeSlots: timeslots,
-				PickupPoints:      locations,
-				DeliveryType:      domain.DELIVERY_TYPE_PICKUP,
-			},
+		Options: &domain.Option{
+			CarrierProduct:    carrierName,
+			Price:             resp.FeeAmount,
+			Currency:          resp.FeeCurrency,
+			DeliveryTimeSlots: timeslots,
+			PickupPoints:      locations,
+			DeliveryType:      domain.DELIVERY_TYPE_PICKUP,
 		},
 	}, nil
 }

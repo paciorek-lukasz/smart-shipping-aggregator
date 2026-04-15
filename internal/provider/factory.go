@@ -1,10 +1,7 @@
 package provider
 
 import (
-	"fmt"
 	"time"
-
-	"github.com/kelseyhightower/envconfig"
 
 	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/dhl"
 	dhlclient "github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/dhl/client"
@@ -21,11 +18,7 @@ import (
 	"github.com/dzwiedz90/smart-shipping-aggregator/internal/resilience"
 )
 
-const (
-	appName = "smart-shipping-aggregator"
-)
-
-type envConfig struct {
+type EnvConfig struct {
 	EnableDhl  bool   `envconfig:"ENABLE_DHL"`
 	DhlBaseUrl string `envconfig:"DHL_BASE_URL"`
 	DhlApiKey  string `envconfig:"DHL_API_KEY"`
@@ -49,15 +42,11 @@ type envConfig struct {
 	EnableUps  bool   `envconfig:"ENABLE_UPS"`
 	UpsBaseUrl string `envconfig:"UPS_BASE_URL"`
 	UpsApiKey  string `envconfig:"UPS_API_KEY"`
+
+	Timeout time.Duration `envconfig:"TIMEOUT"`
 }
 
-func InitProviders() ([]Provider, error) {
-	var cfg envConfig
-
-	if err := envconfig.Process(appName, &cfg); err != nil {
-		return nil, fmt.Errorf("failed to process env config: %w", err)
-	}
-
+func InitProviders(cfg EnvConfig) []Provider {
 	var providers []Provider
 
 	if cfg.EnableDhl {
@@ -126,5 +115,5 @@ func InitProviders() ([]Provider, error) {
 
 	}
 
-	return providers, nil
+	return providers
 }

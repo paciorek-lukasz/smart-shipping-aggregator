@@ -76,14 +76,12 @@ func (s *Service) GetQuotes(ctx context.Context, req *domain.GetQuotesRequest) (
 	}
 
 	return &domain.GetQuotesResponse{
-		Options: []*domain.Option{
-			{
-				CarrierProduct:    carrierName,
-				Price:             resp.NetAmount,
-				Currency:          resp.CurrencyCode,
-				DeliveryTimeSlots: timeslots,
-				DeliveryType:      domain.DELIVERY_TYPE_PICKUP,
-			},
+		Options: &domain.Option{
+			CarrierProduct:    carrierName,
+			Price:             resp.NetAmount,
+			Currency:          resp.CurrencyCode,
+			DeliveryTimeSlots: timeslots,
+			DeliveryType:      domain.DELIVERY_TYPE_HOME_DELIVERY,
 		},
 	}, nil
 }

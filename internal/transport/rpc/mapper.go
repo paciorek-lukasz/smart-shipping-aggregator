@@ -70,7 +70,7 @@ func mapProtoToDomain(pbReq *pb.GetQuotesRequest) *domain.GetQuotesRequest {
 	}
 }
 
-func mapDomainToProto(resp *domain.GetQuotesResponse) (*pb.GetQuotesResponse, error) {
+func mapDomainToProto(resp *domain.GetOptionsResponse) (*pb.GetQuotesResponse, error) {
 	if resp == nil {
 		return nil, errors.New("empty response")
 	}

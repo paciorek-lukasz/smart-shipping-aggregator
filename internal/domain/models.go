@@ -59,8 +59,12 @@ type Dimensions struct {
 	TotalVolumeCm3 int32
 }
 
-type GetQuotesResponse struct {
+type GetOptionsResponse struct {
 	Options []*Option
+}
+
+type GetQuotesResponse struct {
+	Options *Option
 }
 
 type Option struct {
