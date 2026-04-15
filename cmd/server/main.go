@@ -24,7 +24,7 @@ func main() {
 	var cfg provider.EnvConfig
 
 	if err := envconfig.Process(appName, &cfg); err != nil {
-		log.Fatalf("failed to process env config: %w", err)
+		log.Fatalf("failed to process env config: %v", err)
 	}
 
 	providers := provider.InitProviders(cfg)
