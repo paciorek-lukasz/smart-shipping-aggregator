@@ -12,6 +12,7 @@ import (
 
 	pb "github.com/dzwiedz90/smart-shipping-aggregator/api/shipping"
 	"github.com/dzwiedz90/smart-shipping-aggregator/internal/aggregator"
+	"github.com/dzwiedz90/smart-shipping-aggregator/internal/config"
 	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider"
 	"github.com/dzwiedz90/smart-shipping-aggregator/internal/transport/rpc"
 )
@@ -21,7 +22,7 @@ const (
 )
 
 func main() {
-	var cfg provider.EnvConfig
+	var cfg config.EnvConfig
 
 	if err := envconfig.Process(appName, &cfg); err != nil {
 		log.Fatalf("failed to process env config: %v", err)
