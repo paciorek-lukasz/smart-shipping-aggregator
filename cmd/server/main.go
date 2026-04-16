@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
 	"google.golang.org/grpc"
 
@@ -22,6 +23,10 @@ const (
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Fatalf("failed to load env config: %v", err)
+	}
+
 	var cfg config.EnvConfig
 
 	if err := envconfig.Process(appName, &cfg); err != nil {
