@@ -9,6 +9,30 @@ Server listens on port `50051` and provides `GetQuotes` method which:
 2. Queries all configured providers in parallel
 3. Returns list of offers from various carriers
 
+## Project Structure
+
+```
+smart-shipping-aggregator/
+├── api/shipping/           # Generated gRPC code
+├── cmd/server/            # Entry point
+│   ├── main.go
+│   └── .env              # Configuration
+└── internal/
+    ├── aggregator/        # Aggregation logic
+    ├── config/           # Configuration
+    ├── domain/          # Data models
+    ├── provider/         # Provider implementations
+    │   ├── dhl/
+    │   ├── dpd/
+    │   ├── fedex/
+    │   ├── gls/
+    │   ├── inpost/
+    │   └── ups/
+    ├── resilience/       # Circuit breaker
+    └── transport/
+        └── rpc/          # gRPC handler
+```
+
 ## Supported Carriers
 
 - DHL
@@ -56,7 +80,7 @@ Environment variables (`.env` file in `cmd/server/`):
 |ENABLE_UPS|Enable UPS provider|false|
 |UPS_BASE_URL|UPS API URL|localhost|
 |UPS_API_KEY|UPS API key|-|
-|TIMEOUT|Aggregator timeout in seconds|30s|
+|TIMEOUT|Aggregator timeout in seconds|10s|
 
 ## Running
 
@@ -191,27 +215,3 @@ Or in Postman (with gRPC Reflection enabled).
 Each request to provider is wrapped with:
 - **Circuit Breaker** - protects against cascading failures
 - **Timeout** - prevents infinitely blocking
-
-## Project Structure
-
-```
-smart-shipping-aggregator/
-├── api/shipping/           # Generated gRPC code
-├── cmd/server/            # Entry point
-│   ├── main.go
-│   └── .env              # Configuration
-└── internal/
-    ├── aggregator/        # Aggregation logic
-    ├── config/           # Configuration
-    ├── domain/          # Data models
-    ├── provider/         # Provider implementations
-    │   ├── dhl/
-    │   ├── dpd/
-    │   ├── fedex/
-    │   ├── gls/
-    │   ├── inpost/
-    │   └── ups/
-    ├── resilience/       # Circuit breaker
-    └── transport/
-        └── rpc/          # gRPC handler
-```
