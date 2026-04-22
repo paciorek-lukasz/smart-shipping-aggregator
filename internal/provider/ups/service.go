@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	timeLayout  = "2006-01-02T5:04:05"
+	timeLayout  = time.RFC3339
 	carrierName = "ups"
 )
 
