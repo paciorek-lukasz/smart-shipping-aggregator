@@ -100,6 +100,7 @@ const (
 	LOCATION_TYPE_UNKNOWN       LocationType = 0
 	LOCATION_TYPE_LOCKER        LocationType = 1
 	LOCATION_TYPE_SERVICE_POINT LocationType = 2
+	LOCATION_TYPE_POSTOFFICE    LocationType = 3
 )
 
 type OpeningHours struct {

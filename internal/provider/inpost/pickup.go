@@ -32,7 +32,7 @@ func (s *Service) sendPickupRequest(ctx context.Context, req *domain.GetQuotesRe
 		MachineCategory: mapLocationTypes(req.LocationTypes),
 	}
 
-	apiCtx := context.WithValue(ctx, nil, "get_quotes_pickup")
+	apiCtx := context.WithValue(ctx, carrierName, "get_quotes_pickup")
 
 	resp, err := s.apiClient.GetQuotesPickup(apiCtx, apiReq)
 	if err != nil {

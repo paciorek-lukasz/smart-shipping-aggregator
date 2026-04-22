@@ -71,7 +71,7 @@ func (c *Client) simulateApiCall(ctx context.Context, req *http.Request, deliver
 					CoordLat:    "50.0647",
 					CoordLng:    "19.9450",
 					FullAddress: "ul. Floriańska 12",
-					Category:    "package_shop",
+					Category:    "package-shop",
 					OperationHours: []*Schedule{
 						{Weekday: "MONDAY", StartHour: "07:00", EndHour: "21:00"},
 						{Weekday: "TUESDAY", StartHour: "07:00", EndHour: "21:00"},

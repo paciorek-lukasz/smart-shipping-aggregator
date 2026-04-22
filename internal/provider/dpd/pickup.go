@@ -30,7 +30,7 @@ func (s *Service) sendPickupRequest(ctx context.Context, req *domain.GetQuotesRe
 		SearchRadius:   5000,
 	}
 
-	apiCtx := context.WithValue(ctx, nil, "get_quotes_pickup")
+	apiCtx := context.WithValue(ctx, carrierName, "get_quotes_pickup")
 
 	resp, err := s.apiClient.GetQuotesPickup(apiCtx, apiReq)
 	if err != nil {

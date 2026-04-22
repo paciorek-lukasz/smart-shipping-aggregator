@@ -63,6 +63,7 @@ type Location struct {
 const (
 	DhlLocTypeLocker       = "locker"
 	DhlLocTypeServicePoint = "service-point"
+	DhlLocTypePostOffice   = "postoffice"
 )
 
 type OpenTimes struct {

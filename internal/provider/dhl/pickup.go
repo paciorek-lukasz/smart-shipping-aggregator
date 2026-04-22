@@ -32,7 +32,7 @@ func (s *Service) sendPickupRequest(ctx context.Context, req *domain.GetQuotesRe
 		LocationsType:  mapLocationTypes(req.LocationTypes),
 	}
 
-	apiCtx := context.WithValue(ctx, nil, "get_quotes_pickup")
+	apiCtx := context.WithValue(ctx, carrierName, "get_quotes_pickup")
 
 	resp, err := s.apiClient.GetQuotesPickup(apiCtx, apiReq)
 	if err != nil {
@@ -96,6 +96,8 @@ func mapDhlLocType(dhlLocType string) (domain.LocationType, error) {
 		return domain.LOCATION_TYPE_LOCKER, nil
 	case client.DhlLocTypeServicePoint:
 		return domain.LOCATION_TYPE_SERVICE_POINT, nil
+	case client.DhlLocTypePostOffice:
+		return domain.LOCATION_TYPE_POSTOFFICE, nil
 	}
 
 	return 0, errors.New("no matching location type")
