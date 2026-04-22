@@ -23,7 +23,7 @@ const (
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
+	if err := godotenv.Load("cmd/server/.env"); err != nil {
 		log.Fatalf("failed to load env config: %v", err)
 	}
 
