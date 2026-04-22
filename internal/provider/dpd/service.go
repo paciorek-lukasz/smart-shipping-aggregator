@@ -62,7 +62,7 @@ func (s *Service) GetQuotes(ctx context.Context, req *domain.GetQuotesRequest) (
 		},
 	}
 
-	apiCtx := context.WithValue(ctx, nil, "get_quotes_home")
+	apiCtx := context.WithValue(ctx, carrierName, "get_quotes_home")
 
 	resp, err := s.apiClient.GetQuotesHome(apiCtx, apiReq)
 	if err != nil {

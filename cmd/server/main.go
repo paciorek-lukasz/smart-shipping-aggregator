@@ -10,6 +10,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 
 	pb "github.com/dzwiedz90/smart-shipping-aggregator/api/shipping"
 	"github.com/dzwiedz90/smart-shipping-aggregator/internal/aggregator"
@@ -48,6 +49,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
+	reflection.Register(s)
 	pb.RegisterShippingServiceServer(s, grpcHandler)
 
 	go func() {

@@ -2,6 +2,7 @@ package aggregator
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -24,7 +25,8 @@ func NewService(providers []provider.Provider, timeout time.Duration) *Service {
 func (s *Service) FetchQuotes(ctx context.Context, req *domain.GetQuotesRequest) *domain.GetOptionsResponse {
 	resultsChan := make(chan *domain.GetQuotesResponse, len(s.providers))
 
-	ctx, cancel := context.WithTimeout(ctx, s.timeout*time.Second)
+	fmt.Println(s.timeout)
+	ctx, cancel := context.WithTimeout(ctx, s.timeout)
 	defer cancel()
 
 	for i, p := range s.providers {
