@@ -50,7 +50,67 @@ func TestService_GetQuotes(t *testing.T) {
 				recorder.GetQuotesPickup(gomock.Any(), gomock.Any()).Return(nil, errors.New("some api error"))
 			},
 			checks: []testutilities.Check{
-				testutilities.GotErrorMessage("failed to get quotes from carrier API: some api error"),
+				testutilities.GotExactErrorMessage("failed to get quotes from carrier API: some api error"),
+			},
+		},
+		{
+			name: "fail home delivery, api returned error",
+			req:  validGetQuotesRequest(domain.DELIVERY_TYPE_HOME_DELIVERY, nil),
+			prepareApiClient: func(recorder *mocks.MockapiClientMockRecorder) {
+				recorder.GetQuotesHome(gomock.Any(), gomock.Any()).Return(nil, errors.New("connection refused"))
+			},
+			checks: []testutilities.Check{
+				testutilities.GotExactErrorMessage("failed to get quotes from carrier API: connection refused"),
+			},
+		},
+		{
+			name: "fail pickup, api returned error",
+			req:  validGetQuotesRequest(domain.DELIVERY_TYPE_PICKUP, nil),
+			prepareApiClient: func(recorder *mocks.MockapiClientMockRecorder) {
+				recorder.GetQuotesPickup(gomock.Any(), gomock.Any()).Return(nil, errors.New("timeout"))
+			},
+			checks: []testutilities.Check{
+				testutilities.GotExactErrorMessage("failed to get quotes from carrier API: timeout"),
+			},
+		},
+		{
+			name: "fail home delivery, invalid timeslot",
+			req:  validGetQuotesRequest(domain.DELIVERY_TYPE_HOME_DELIVERY, nil),
+			prepareApiClient: func(recorder *mocks.MockapiClientMockRecorder) {
+				recorder.GetQuotesHome(gomock.Any(), gomock.Any()).Return(invalidTimeslotResponse(), nil)
+			},
+			checks: []testutilities.Check{
+				testutilities.ContainsErrorMessage("failed to parse start timeslot"),
+			},
+		},
+		{
+			name: "fail pickup, invalid timeslot",
+			req:  validGetQuotesRequest(domain.DELIVERY_TYPE_PICKUP, nil),
+			prepareApiClient: func(recorder *mocks.MockapiClientMockRecorder) {
+				recorder.GetQuotesPickup(gomock.Any(), gomock.Any()).Return(invalidPickupTimeslotResponse(), nil)
+			},
+			checks: []testutilities.Check{
+				testutilities.ContainsErrorMessage("failed to parse start timeslot"),
+			},
+		},
+		{
+			name: "success pickup, empty locations",
+			req:  validGetQuotesRequest(domain.DELIVERY_TYPE_PICKUP, nil),
+			prepareApiClient: func(recorder *mocks.MockapiClientMockRecorder) {
+				recorder.GetQuotesPickup(gomock.Any(), gomock.Any()).Return(emptyLocationsResponse(), nil)
+			},
+			checks: []testutilities.Check{
+				testutilities.GotSuccess,
+			},
+		},
+		{
+			name: "fail pickup, unknown location type",
+			req:  validGetQuotesRequest(domain.DELIVERY_TYPE_PICKUP, nil),
+			prepareApiClient: func(recorder *mocks.MockapiClientMockRecorder) {
+				recorder.GetQuotesPickup(gomock.Any(), gomock.Any()).Return(unknownLocationTypeResponse(), nil)
+			},
+			checks: []testutilities.Check{
+				testutilities.ContainsErrorMessage("failed to map location type"),
 			},
 		},
 	}
@@ -241,6 +301,91 @@ func validGetQuotesPickupResponse() *domain.GetQuotesResponse {
 						},
 					},
 				},
+			},
+		},
+	}
+}
+
+func invalidTimeslotResponse() *client.DhlHomeApiResponse {
+	return &client.DhlHomeApiResponse{
+		Earliest: "invalid-date",
+		Latest:   "2026-04-12T18:00:00Z",
+		Price:    1000,
+		Currency: "USD",
+	}
+}
+
+func invalidPickupTimeslotResponse() *client.DhlPickupApiResponse {
+	return &client.DhlPickupApiResponse{
+		Earliest: "bad-date",
+		Latest:   "2026-04-11T20:00:00Z",
+		Price:    899,
+		Currency: "PLN",
+		Locations: []*client.Location{
+			{
+				Id:          "DHL-PO-001",
+				Name:        "DHL Punkt Partnerski",
+				City:        "Warszawa",
+				PostalCode:  "00-001",
+				Country:     "PL",
+				Latitude:    "52.2297",
+				Longitude:   "21.0122",
+				AddressLine: "ul. Marszałkowska 1",
+				Type:        "postoffice",
+				OpenTimes:   []*client.OpenTimes{},
+				IsAvailable: true,
+			},
+		},
+	}
+}
+
+func emptyLocationsResponse() *client.DhlPickupApiResponse {
+	return &client.DhlPickupApiResponse{
+		Earliest:  "2026-04-09T10:00:00Z",
+		Latest:    "2026-04-11T20:00:00Z",
+		Price:     899,
+		Currency:  "PLN",
+		Locations: []*client.Location{},
+	}
+}
+
+func validGetQuotesEmptyLocationsResponse() *domain.GetQuotesResponse {
+	return &domain.GetQuotesResponse{
+		Options: &domain.Option{
+			CarrierProduct: "dhl",
+			Price:          899,
+			Currency:       "PLN",
+			DeliveryTimeSlots: []*domain.DeliveryTimeSlot{
+				{
+					Start: time.Date(2026, 4, 9, 10, 0, 0, 0, time.UTC),
+					End:   time.Date(2026, 4, 11, 20, 0, 0, 0, time.UTC),
+				},
+			},
+			DeliveryType: domain.DELIVERY_TYPE_PICKUP,
+			PickupPoints: []*domain.PickupPoint{},
+		},
+	}
+}
+
+func unknownLocationTypeResponse() *client.DhlPickupApiResponse {
+	return &client.DhlPickupApiResponse{
+		Earliest: "2026-04-09T10:00:00Z",
+		Latest:   "2026-04-11T20:00:00Z",
+		Price:    899,
+		Currency: "PLN",
+		Locations: []*client.Location{
+			{
+				Id:          "DHL-PO-001",
+				Name:        "DHL Punkt Partnerski",
+				City:        "Warszawa",
+				PostalCode:  "00-001",
+				Country:     "PL",
+				Latitude:    "52.2297",
+				Longitude:   "21.0122",
+				AddressLine: "ul. Marszałkowska 1",
+				Type:        "unknown_type",
+				OpenTimes:   []*client.OpenTimes{},
+				IsAvailable: true,
 			},
 		},
 	}

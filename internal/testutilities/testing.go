@@ -1,6 +1,7 @@
 package testutilities
 
 import (
+	"strings"
 	"testing"
 	"unicode"
 	"unicode/utf8"
@@ -18,7 +19,7 @@ func GotSuccess(_ any, err error, t *testing.T, args ...any) {
 	}
 }
 
-func GotErrorMessage(expectedMessage string) Check {
+func GotExactErrorMessage(expectedMessage string) Check {
 	return func(_ any, err error, t *testing.T, args ...any) {
 		t.Helper()
 
@@ -29,6 +30,21 @@ func GotErrorMessage(expectedMessage string) Check {
 
 		if err.Error() != expectedMessage {
 			t.Errorf("expected error %q, got %q", expectedMessage, err)
+		}
+	}
+}
+
+func ContainsErrorMessage(expectedMessage string) Check {
+	return func(_ any, err error, t *testing.T, args ...any) {
+		t.Helper()
+
+		if err == nil {
+			t.Errorf("expected error containing %q, got nil", expectedMessage)
+			return
+		}
+
+		if !strings.Contains(err.Error(), expectedMessage) {
+			t.Errorf("expected error containing %q, got %q", expectedMessage, err)
 		}
 	}
 }
