@@ -26,6 +26,8 @@ type Service struct {
 	searchRadius    int32
 }
 
+//go:generate mockgen -destination mocks/generated.go --package mocks --source service.go
+
 func NewService(apiClient apiClient, apiKey string, dropPointsLimit, searchRadius int32) *Service {
 	return &Service{
 		apiClient:       apiClient,

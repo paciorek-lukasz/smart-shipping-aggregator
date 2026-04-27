@@ -14,6 +14,8 @@ const (
 	carrierName = "gls"
 )
 
+//go:generate mockgen -destination mocks/generated.go --package mocks --source service.go
+
 type apiClient interface {
 	GetQuotesHome(ctx context.Context, req *client.GlsHomeApiRequest) (*client.GlsHomeApiResponse, error)
 	GetQuotesPickup(ctx context.Context, req *client.GlsPickupApiRequest) (*client.GlsPickupApiResponse, error)
