@@ -2,6 +2,7 @@ package dhl
 
 import (
 	"context"
+	"errors"
 	"testing"
 	"time"
 
@@ -40,6 +41,16 @@ func TestService_GetQuotes(t *testing.T) {
 			checks: []testutilities.Check{
 				testutilities.GotSuccess,
 				testutilities.GotResult(validGetQuotesPickupResponse(), testutilities.IgnoreUnexportedFields()),
+			},
+		},
+		{
+			name: "fail, api returned error",
+			req:  validGetQuotesRequest(domain.DELIVERY_TYPE_PICKUP, nil),
+			prepareApiClient: func(recorder *mocks.MockapiClientMockRecorder) {
+				recorder.GetQuotesPickup(gomock.Any(), gomock.Any()).Return(nil, errors.New("some api error"))
+			},
+			checks: []testutilities.Check{
+				testutilities.GotErrorMessage("failed to get quotes from carrier API: some api error"),
 			},
 		},
 	}
