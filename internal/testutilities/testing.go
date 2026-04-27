@@ -34,6 +34,21 @@ func GotExactErrorMessage(expectedMessage string) Check {
 	}
 }
 
+func GotContainsErrorMessage(expectedMessage string) Check {
+	return func(_ any, err error, t *testing.T, args ...any) {
+		t.Helper()
+
+		if err == nil {
+			t.Errorf("expected error containing %q, got nil", expectedMessage)
+			return
+		}
+
+		if !strings.Contains(err.Error(), expectedMessage) {
+			t.Errorf("expected error containing %q, got %q", expectedMessage, err)
+		}
+	}
+}
+
 func ContainsErrorMessage(expectedMessage string) Check {
 	return func(_ any, err error, t *testing.T, args ...any) {
 		t.Helper()
