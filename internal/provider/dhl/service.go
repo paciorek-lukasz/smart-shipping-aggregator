@@ -19,6 +19,8 @@ type apiClient interface {
 	GetQuotesPickup(ctx context.Context, req *client.DhlPickupApiRequest) (*client.DhlPickupApiResponse, error)
 }
 
+//go:generate mockgen -destination mocks/generated.go --package mocks --source service.go
+
 type Service struct {
 	apiClient      apiClient
 	apiKey         string
@@ -77,7 +79,6 @@ func (s *Service) GetQuotes(ctx context.Context, req *domain.GetQuotesRequest) (
 
 	return &domain.GetQuotesResponse{
 		Options: &domain.Option{
-
 			CarrierProduct:    carrierName,
 			Price:             resp.Price,
 			Currency:          resp.Currency,
