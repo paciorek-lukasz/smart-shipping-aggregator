@@ -27,5 +27,8 @@ type EnvConfig struct {
 	UpsBaseUrl string `envconfig:"UPS_BASE_URL"`
 	UpsApiKey  string `envconfig:"UPS_API_KEY"`
 
-	Timeout time.Duration `envconfig:"TIMEOUT"`
+	AggregatorTimeout time.Duration `envconfig:"AGGREGATOR_TIMEOUT"`
+
+	CircuitBreakerTreshold int           `envconfig:"CB_THRESHOLD"`
+	CircuitBreakerCooldown time.Duration `envconfig:"CB_COOLDOWN"`
 }

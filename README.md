@@ -13,25 +13,43 @@ Server listens on port `50051` and provides `GetQuotes` method which:
 
 ```
 smart-shipping-aggregator/
-├── api/shipping/           # Generated gRPC code
-├── cmd/server/            # Entry point
-│   ├── main.go
-│   └── .env              # Configuration
-└── internal/
-    ├── aggregator/        # Aggregation logic
-    ├── config/           # Configuration
-    ├── domain/          # Data models
-    ├── provider/         # Provider implementations
-    │   ├── dhl/
-    │   ├── dpd/
-    │   ├── fedex/
-    │   ├── gls/
-    │   ├── inpost/
-    │   └── ups/
-    ├── resilience/       # Circuit breaker
-    └── transport/
-        └── rpc/          # gRPC handler
+├── api/shipping/                 # Generated gRPC code (protobuf definitions)
+│   ├── shipping.pb.go            # Generated protobuf message types
+│   ├── service.pb.go             # Generated service definitions
+│   └── service_grpc.pb.go        # Generated gRPC server/client code
+├── cmd/server/                   # Application entry point with server startup, signal handling, dependency injection and environment configuration
+├── internal/
+│   ├── aggregator/               # Quote aggregation logic for FetchQuotes implementation (fan-out pattern)
+│   ├── config                    # Configuration parsing
+│   ├── domain                    # Business domain models
+│   ├── provider                  # Carrier provider implementations
+│   │   ├── provider.go           # Provider interface definition
+│   │   ├── factory.go            # Provider factory (InitProviders)
+│   │   ├── dhl/                  # DHL provider
+│   │   │   ├── service.go        # Business logic
+│   │   │   ├── pickup.go         # Pickup delivery logic
+│   │   │   ├── client/           # API client with HTTP client implementation, models and external API calls
+│   │   ├── dpd/                  # DPD provider (same structure as DHL)
+│   │   ├── fedex/                # Fedex provider (same structure as DHL)
+│   │   ├── gls/                  # GLS provider (same structure as DHL)
+│   │   ├── inpost/               # Inpost provider (same structure as DHL)
+│   │   └── ups/                  # UPS provider (same structure as DHL)
+│   ├── resilience                # Resilience patterns
+│   │   ├── circuit_breaker.go    # Circuit breaker implementation
+│   └── transport/
+│       └── rpc                   # gRPC transport layer
+│           ├── handler.go        # RPC handler (GetQuotes method)
+│           ├── mapper.go         # Proto <-> Domain mapping
+│           ├── server.go         # gRPC server setup
 ```
+
+## Technical Highlights
+
+- **Concurrency Pattern:** Implementation of the Fan-out/Fan-in pattern using buffered channels and `select` for gathering quotes from multiple providers.
+- **Context Propagation:** Proper use of `context.Context` to handle deadlines and propagate cancellation signals down to simulated network calls.
+- **Decoupled Architecture:** Strict separation between Transport (gRPC), Domain (business logic), and Infrastructure (provider-specific clients).
+- **Failure Isolation:** Use of Circuit Breakers to ensure that one failing or slow carrier does not impact the response time of others.
+- **Graceful Shutdown:** Integration with OS signals to ensure the server finishes processing active requests before shutting down.
 
 ## Supported Carriers
 

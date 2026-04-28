@@ -39,7 +39,7 @@ func main() {
 		log.Fatal("no providers initialized")
 	}
 
-	aggSvc := aggregator.NewService(providers, cfg.Timeout)
+	aggSvc := aggregator.NewService(providers, cfg.AggregatorTimeout)
 
 	grpcHandler := rpc.NewHandler(aggSvc)
 
