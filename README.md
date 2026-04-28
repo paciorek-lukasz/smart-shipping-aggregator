@@ -98,7 +98,9 @@ Environment variables (`.env` file in `cmd/server/`):
 |ENABLE_UPS|Enable UPS provider|false|
 |UPS_BASE_URL|UPS API URL|localhost|
 |UPS_API_KEY|UPS API key|-|
-|TIMEOUT|Aggregator timeout in seconds|10s|
+|AGGREGATOR_TIMEOUT|Aggregator timeout in seconds|10s|
+|CB_THRESHOLD|Circuit Breaker threshold|5|
+|CB_COOLDOWN|Circuit Breaker cooldown|30s|
 
 ## Running
 
