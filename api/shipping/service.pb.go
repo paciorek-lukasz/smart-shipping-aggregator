@@ -26,7 +26,7 @@ const file_api_shipping_service_proto_rawDesc = "" +
 	"\n" +
 	"\x1aapi/shipping/service.proto\x12\x17smartshippingaggregator\x1a\x1bapi/shipping/shipping.proto2u\n" +
 	"\x0fShippingService\x12b\n" +
-	"\tGetQuotes\x12).smartshippingaggregator.GetQuotesRequest\x1a*.smartshippingaggregator.GetQuotesResponseB=Z;github.com/dzwiedz90/smart-shipping-aggregator/api/shippingb\x06proto3"
+	"\tGetQuotes\x12).smartshippingaggregator.GetQuotesRequest\x1a*.smartshippingaggregator.GetQuotesResponseB=Z;github.com/paciorek-lukasz/smart-shipping-aggregator/api/shippingb\x06proto3"
 
 var file_api_shipping_service_proto_goTypes = []any{
 	(*GetQuotesRequest)(nil),  // 0: smartshippingaggregator.GetQuotesRequest

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/inpost/client"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/domain"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/provider/inpost/client"
 )
 
 func (s *Service) sendPickupRequest(ctx context.Context, req *domain.GetQuotesRequest) (*domain.GetQuotesResponse, error) {

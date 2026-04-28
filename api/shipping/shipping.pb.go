@@ -999,7 +999,7 @@ const file_api_shipping_shipping_proto_rawDesc = "" +
 	"\fLocationType\x12\x10\n" +
 	"\fTYPE_UNKNOWN\x10\x00\x12\x0f\n" +
 	"\vTYPE_LOCKER\x10\x01\x12\x16\n" +
-	"\x12TYPE_SERVICE_POINT\x10\x02B=Z;github.com/dzwiedz90/smart-shipping-aggregator/api/shippingb\x06proto3"
+	"\x12TYPE_SERVICE_POINT\x10\x02B=Z;github.com/paciorek-lukasz/smart-shipping-aggregator/api/shippingb\x06proto3"
 
 var (
 	file_api_shipping_shipping_proto_rawDescOnce sync.Once

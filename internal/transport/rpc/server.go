@@ -5,7 +5,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	pb "github.com/dzwiedz90/smart-shipping-aggregator/api/shipping"
+	pb "github.com/paciorek-lukasz/smart-shipping-aggregator/api/shipping"
 )
 
 func RunServer(port string, handler *Handler) error {

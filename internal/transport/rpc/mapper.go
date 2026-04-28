@@ -3,8 +3,8 @@ package rpc
 import (
 	"errors"
 
-	pb "github.com/dzwiedz90/smart-shipping-aggregator/api/shipping"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
+	pb "github.com/paciorek-lukasz/smart-shipping-aggregator/api/shipping"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/domain"
 )
 
 func mapProtoToDomain(pbReq *pb.GetQuotesRequest) *domain.GetQuotesRequest {

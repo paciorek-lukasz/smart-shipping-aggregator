@@ -12,11 +12,11 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	pb "github.com/dzwiedz90/smart-shipping-aggregator/api/shipping"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/aggregator"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/config"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/transport/rpc"
+	pb "github.com/paciorek-lukasz/smart-shipping-aggregator/api/shipping"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/aggregator"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/config"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/provider"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/transport/rpc"
 )
 
 const (

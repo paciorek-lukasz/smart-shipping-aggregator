@@ -1,4 +1,4 @@
-module github.com/dzwiedz90/smart-shipping-aggregator
+module github.com/paciorek-lukasz/smart-shipping-aggregator
 
 go 1.25
 

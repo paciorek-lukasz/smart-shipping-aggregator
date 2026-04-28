@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/domain"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/provider"
 )
 
 type Service struct {

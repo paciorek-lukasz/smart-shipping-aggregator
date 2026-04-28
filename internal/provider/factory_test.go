@@ -3,7 +3,7 @@ package provider
 import (
 	"testing"
 
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/config"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/config"
 )
 
 func TestInitProviders_AllEnabled(t *testing.T) {

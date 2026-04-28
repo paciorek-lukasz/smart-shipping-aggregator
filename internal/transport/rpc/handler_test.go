@@ -8,8 +8,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	pb "github.com/dzwiedz90/smart-shipping-aggregator/api/shipping"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
+	pb "github.com/paciorek-lukasz/smart-shipping-aggregator/api/shipping"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/domain"
 )
 
 func TestHandler_GetQuotes_Success(t *testing.T) {

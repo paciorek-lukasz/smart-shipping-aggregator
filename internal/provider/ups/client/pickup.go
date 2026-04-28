@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/domain"
 )
 
 const (

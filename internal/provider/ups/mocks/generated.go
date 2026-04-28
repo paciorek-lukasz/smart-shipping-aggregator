@@ -8,7 +8,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	client "github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/ups/client"
+	client "github.com/paciorek-lukasz/smart-shipping-aggregator/internal/provider/ups/client"
 	gomock "github.com/golang/mock/gomock"
 )
 

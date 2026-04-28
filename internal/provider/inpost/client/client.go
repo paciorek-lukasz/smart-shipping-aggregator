@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/resilience"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/domain"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/resilience"
 )
 
 type Client struct {

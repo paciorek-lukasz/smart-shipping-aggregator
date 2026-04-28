@@ -8,10 +8,10 @@ import (
 
 	"github.com/golang/mock/gomock"
 
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/inpost/client"
-	mocks "github.com/dzwiedz90/smart-shipping-aggregator/internal/provider/inpost/mocks"
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/testutilities"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/domain"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/provider/inpost/client"
+	mocks "github.com/paciorek-lukasz/smart-shipping-aggregator/internal/provider/inpost/mocks"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/testutilities"
 )
 
 func TestService_GetQuotes(t *testing.T) {

@@ -3,7 +3,7 @@ package provider
 import (
 	"context"
 
-	"github.com/dzwiedz90/smart-shipping-aggregator/internal/domain"
+	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/domain"
 )
 
 type Provider interface {

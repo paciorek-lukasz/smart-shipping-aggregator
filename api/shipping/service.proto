@@ -4,7 +4,7 @@ package smartshippingaggregator;
 
 import "api/shipping/shipping.proto";
 
-option go_package = "github.com/dzwiedz90/smart-shipping-aggregator/api/shipping";
+option go_package = "github.com/paciorek-lukasz/smart-shipping-aggregator/api/shipping";
 
 service ShippingService {
     rpc GetQuotes (GetQuotesRequest) returns (GetQuotesResponse);
