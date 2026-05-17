@@ -24,6 +24,14 @@ func NewHttpServer(service shippingService) *HttpServer {
 }
 
 func (s *HttpServer) GetQuotes(rw http.ResponseWriter, req *http.Request) {
+	if req.Method == http.MethodOptions {
+		rw.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+		rw.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+		rw.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		rw.WriteHeader(http.StatusOK)
+		return
+	}
+
 	if req.Method != http.MethodPost {
 		http.Error(rw, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -43,9 +51,7 @@ func (s *HttpServer) GetQuotes(rw http.ResponseWriter, req *http.Request) {
 
 	resp := s.service.FetchQuotes(req.Context(), &domainReq)
 
-	rw.Header().Set("Content-Type", "application/json")
 	rw.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
-	rw.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
-	rw.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	rw.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(rw).Encode(resp)
 }
