@@ -44,5 +44,8 @@ func (s *HttpServer) GetQuotes(rw http.ResponseWriter, req *http.Request) {
 	resp := s.service.FetchQuotes(req.Context(), &domainReq)
 
 	rw.Header().Set("Content-Type", "application/json")
+	rw.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+	rw.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	rw.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	json.NewEncoder(rw).Encode(resp)
 }
