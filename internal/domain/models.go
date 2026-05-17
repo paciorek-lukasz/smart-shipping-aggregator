@@ -52,11 +52,11 @@ type Item struct {
 }
 
 type Dimensions struct {
-	LengthCm       int32 `json:"length_cm"`
-	WidthCm        int32 `json:"width_cm"`
-	HeightCm       int32 `json:"height_cm"`
-	TotalWeightG   int32 `json:"total_weight_g"`
-	TotalVolumeCm3 int32 `json:"total_volume_cm3"`
+	LengthCm       int32 `json:"length"`
+	WidthCm        int32 `json:"width"`
+	HeightCm       int32 `json:"height"`
+	TotalWeightG   int32 `json:"weight"`
+	TotalVolumeCm3 int32 `json:"volume"`
 }
 
 type GetOptionsResponse struct {
