@@ -83,6 +83,27 @@ func (c *Client) simulateApiCall(ctx context.Context, req *http.Request, deliver
 					},
 					IsAvailable: true,
 				},
+				{
+					Id:          "DPD-PS-002",
+					Name:        "DPD Parcel Shop",
+					City:        "Kraków",
+					PostalCode:  "30-002",
+					Country:     "PL",
+					Latitude:    "50.0647",
+					Longitude:   "19.9450",
+					AddressLine: "ul. Floriańska 12",
+					Type:        "packageshop",
+					OpenTimes: []*DpdOpenTimes{
+						{DayOfWeek: "MONDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "TUESDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "WEDNESDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "THURSDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "FRIDAY", Opens: "07:00", Closes: "21:00"},
+						{DayOfWeek: "SATURDAY", Opens: "08:00", Closes: "18:00"},
+						{DayOfWeek: "SUNDAY", Opens: "", Closes: ""},
+					},
+					IsAvailable: true,
+				},
 			},
 		})
 	}

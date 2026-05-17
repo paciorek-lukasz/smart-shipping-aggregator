@@ -83,6 +83,27 @@ func (c *Client) simulateApiCall(ctx context.Context, req *http.Request, deliver
 					},
 					IsActive: true,
 				},
+				{
+					DropPointId: "UPS-SHOP-002",
+					DisplayName: "UPS Package Shop",
+					City:        "Kraków",
+					ZipCode:     "31-011",
+					Country:     "PL",
+					CoordLat:    "50.0647",
+					CoordLng:    "19.9450",
+					FullAddress: "ul. Floriańska 62",
+					Category:    "package-shop",
+					OperationHours: []*Schedule{
+						{Weekday: "MONDAY", StartHour: "07:00", EndHour: "21:00"},
+						{Weekday: "TUESDAY", StartHour: "07:00", EndHour: "21:00"},
+						{Weekday: "WEDNESDAY", StartHour: "07:00", EndHour: "21:00"},
+						{Weekday: "THURSDAY", StartHour: "07:00", EndHour: "21:00"},
+						{Weekday: "FRIDAY", StartHour: "07:00", EndHour: "21:00"},
+						{Weekday: "SATURDAY", StartHour: "08:00", EndHour: "15:00"},
+						{Weekday: "SUNDAY", StartHour: "", EndHour: ""},
+					},
+					IsActive: true,
+				},
 			},
 		})
 	}

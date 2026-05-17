@@ -83,6 +83,27 @@ func (c *Client) simulateApiCall(ctx context.Context, req *http.Request, deliver
 					},
 					IsAvailable: true,
 				},
+				{
+					Id:          "DHL-PO-002",
+					Name:        "DHL Punkt Partnerski",
+					City:        "Warszawa",
+					PostalCode:  "00-002",
+					Country:     "PL",
+					Latitude:    "52.2297",
+					Longitude:   "21.0122",
+					AddressLine: "ul. Marszałkowska 2",
+					Type:        "postoffice",
+					OpenTimes: []*OpenTimes{
+						{DayOfWeek: "MONDAY", Opens: "08:00", Closes: "20:00"},
+						{DayOfWeek: "TUESDAY", Opens: "08:00", Closes: "20:00"},
+						{DayOfWeek: "WEDNESDAY", Opens: "08:00", Closes: "20:00"},
+						{DayOfWeek: "THURSDAY", Opens: "08:00", Closes: "20:00"},
+						{DayOfWeek: "FRIDAY", Opens: "08:00", Closes: "20:00"},
+						{DayOfWeek: "SATURDAY", Opens: "09:00", Closes: "16:00"},
+						{DayOfWeek: "SUNDAY", Opens: "", Closes: ""},
+					},
+					IsAvailable: true,
+				},
 			},
 		})
 	}

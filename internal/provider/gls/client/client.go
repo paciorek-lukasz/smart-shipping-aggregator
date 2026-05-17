@@ -83,6 +83,27 @@ func (c *Client) simulateApiCall(ctx context.Context, req *http.Request, deliver
 					},
 					Operational: true,
 				},
+				{
+					DepotCode:  "GLS-PO-002",
+					DepotName:  "GLS Parcel Shop Wrocław",
+					City:       "Wrocław",
+					PostalCode: "50-002",
+					IsoCountry: "PL",
+					GeoLat:     "51.1079",
+					GeoLon:     "17.0385",
+					Street:     "ul. Krupnicza 4",
+					Facility:   "parcelshop",
+					Timetable: []*TimetableDay{
+						{DayName: "MON", OpenHr: "08:00", CloseHr: "20:00"},
+						{DayName: "TUE", OpenHr: "08:00", CloseHr: "20:00"},
+						{DayName: "WED", OpenHr: "08:00", CloseHr: "20:00"},
+						{DayName: "THU", OpenHr: "08:00", CloseHr: "20:00"},
+						{DayName: "FRI", OpenHr: "08:00", CloseHr: "20:00"},
+						{DayName: "SAT", OpenHr: "09:00", CloseHr: "14:00"},
+						{DayName: "SUN", OpenHr: "", CloseHr: ""},
+					},
+					Operational: true,
+				},
 			},
 		})
 	}

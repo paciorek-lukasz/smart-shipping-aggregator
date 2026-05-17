@@ -83,6 +83,27 @@ func (c *Client) simulateApiCall(ctx context.Context, req *http.Request, deliver
 					},
 					Accepts: []string{"pack"},
 				},
+				{
+					MachineId:  "KRA02-B",
+					Name:       "Kraków Nowa Huta",
+					Locality:   "Kraków",
+					ZipCode:    "31-861",
+					CountryIso: "PL",
+					Latitude:   "50.0917",
+					Longitude:  "20.0506",
+					Address:    "al. Andersa 15",
+					Status:     "active",
+					Hours: []*Opening{
+						{DayIndex: "1", OpenTime: "00:00", CloseTime: "23:59"},
+						{DayIndex: "2", OpenTime: "00:00", CloseTime: "23:59"},
+						{DayIndex: "3", OpenTime: "00:00", CloseTime: "23:59"},
+						{DayIndex: "4", OpenTime: "00:00", CloseTime: "23:59"},
+						{DayIndex: "5", OpenTime: "00:00", CloseTime: "23:59"},
+						{DayIndex: "6", OpenTime: "00:00", CloseTime: "23:59"},
+						{DayIndex: "7", OpenTime: "00:00", CloseTime: "23:59"},
+					},
+					Accepts: []string{"pack"},
+				},
 			},
 		})
 	}
