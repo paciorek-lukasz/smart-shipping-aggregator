@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -16,6 +17,7 @@ import (
 	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/aggregator"
 	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/config"
 	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/provider"
+	ihttp "github.com/paciorek-lukasz/smart-shipping-aggregator/internal/transport/http"
 	"github.com/paciorek-lukasz/smart-shipping-aggregator/internal/transport/rpc"
 )
 
@@ -41,7 +43,7 @@ func main() {
 
 	aggSvc := aggregator.NewService(providers, cfg.AggregatorTimeout)
 
-	grpcHandler := rpc.NewHandler(aggSvc)
+	grpcHandler := rpc.NewGrpcServer(aggSvc)
 
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
@@ -58,6 +60,10 @@ func main() {
 			log.Fatalf("failed to serve: %v", err)
 		}
 	}()
+
+	httpServer := ihttp.NewHttpServer(aggSvc)
+	mux := http.NewServeMux()
+	mux.HandleFunc("api/quotes", httpServer.GetQuotes)
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)

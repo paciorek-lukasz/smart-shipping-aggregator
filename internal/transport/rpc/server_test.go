@@ -17,7 +17,7 @@ func TestHandler_GetQuotes_Success(t *testing.T) {
 		result: validDomainResponse(),
 	}
 
-	handler := NewHandler(mockService)
+	handler := NewGrpcServer(mockService)
 	resp, err := handler.GetQuotes(context.Background(), validProtoRequest())
 
 	if err != nil {
@@ -34,7 +34,7 @@ func TestHandler_GetQuotes_MissingSender(t *testing.T) {
 		result: validDomainResponse(),
 	}
 
-	handler := NewHandler(mockService)
+	handler := NewGrpcServer(mockService)
 	req := validProtoRequest()
 	req.Sender = nil
 
@@ -51,7 +51,7 @@ func TestHandler_GetQuotes_MissingRecipient(t *testing.T) {
 		result: validDomainResponse(),
 	}
 
-	handler := NewHandler(mockService)
+	handler := NewGrpcServer(mockService)
 	req := validProtoRequest()
 	req.Recipient = nil
 
@@ -68,7 +68,7 @@ func TestHandler_GetQuotes_ServiceError(t *testing.T) {
 		err: errors.New("service error"),
 	}
 
-	handler := NewHandler(mockService)
+	handler := NewGrpcServer(mockService)
 	_, err := handler.GetQuotes(context.Background(), validProtoRequest())
 
 	if err == nil {
@@ -121,7 +121,7 @@ func TestMapDomainToProto_NilResponse(t *testing.T) {
 
 type mockShippingService struct {
 	result *domain.GetOptionsResponse
-	err   error
+	err    error
 }
 
 func (m *mockShippingService) FetchQuotes(ctx context.Context, req *domain.GetQuotesRequest) *domain.GetOptionsResponse {
@@ -138,22 +138,22 @@ func validProtoRequest() *pb.GetQuotesRequest {
 			Address: &pb.Address{
 				Address:    "123 Main St",
 				PostalCode: "12345",
-				City:     "New York",
-				Country:  "US",
+				City:       "New York",
+				Country:    "US",
 			},
 			Email: "sender@test.com",
-			Phone:  "123456789",
+			Phone: "123456789",
 		},
 		Recipient: &pb.Party{
 			Name: "Recipient",
 			Address: &pb.Address{
 				Address:    "456 Elm St",
 				PostalCode: "67890",
-				City:     "Los Angeles",
-				Country:  "US",
+				City:       "Los Angeles",
+				Country:    "US",
 			},
 			Email: "recipient@test.com",
-			Phone:  "987654321",
+			Phone: "987654321",
 		},
 		DeliveryType: pb.DeliveryType_DELIVERY_TYPE_HOME_DELIVERY,
 	}
@@ -163,11 +163,11 @@ func validDomainResponse() *domain.GetOptionsResponse {
 	return &domain.GetOptionsResponse{
 		Options: []*domain.Option{
 			{
-				OptionId:        0,
+				OptionId:       0,
 				CarrierProduct: "test-carrier",
-				Price:         1000,
-				Currency:      "USD",
-				DeliveryType: domain.DELIVERY_TYPE_HOME_DELIVERY,
+				Price:          1000,
+				Currency:       "USD",
+				DeliveryType:   domain.DELIVERY_TYPE_HOME_DELIVERY,
 			},
 		},
 	}
