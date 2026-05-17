@@ -3,11 +3,11 @@ package domain
 import "time"
 
 type GetQuotesRequest struct {
-	Sender        *Party
-	Recipient     *Party
-	Package       *Package
-	DeliveryType  DeliveryType
-	LocationTypes []LocationType
+	Sender        *Party         `json:"sender"`
+	Recipient     *Party         `json:"recipient"`
+	Package       *Package       `json:"package"`
+	DeliveryType  DeliveryType   `json:"delivery_type"`
+	LocationTypes []LocationType `json:"location_types"`
 }
 
 type DeliveryType string
@@ -19,79 +19,79 @@ const (
 )
 
 type Party struct {
-	Name    string
-	Address *Address
-	Phone   string
-	Email   string
+	Name    string   `json:"name"`
+	Address *Address `json:"address"`
+	Phone   string   `json:"phone"`
+	Email   string   `json:"email"`
 }
 
 type Address struct {
-	Address    string
-	PostalCode string
-	City       string
-	Country    string
-	Longitude  string
-	Latitude   string
+	Address    string `json:"address"`
+	PostalCode string `json:"postal_code"`
+	City       string `json:"city"`
+	Country    string `json:"country"`
+	Longitude  string `json:"longitude"`
+	Latitude   string `json:"latitude"`
 }
 
 type Package struct {
-	Items []*Item
+	Items []*Item `json:"items"`
 	// Price is provided in cents
-	TotalPrice int32
-	Currency   string
-	Dimensions *Dimensions
+	TotalPrice int32       `json:"total_price"`
+	Currency   string      `json:"currency"`
+	Dimensions *Dimensions `json:"dimensions"`
 }
 
 type Item struct {
-	ItemID int32
-	Sku    string
-	Name   string
+	ItemID int32  `json:"item_id"`
+	Sku    string `json:"sku"`
+	Name   string `json:"name"`
 	// Price is provided in cents
-	Price    int32
-	Quantity int32
+	Price    int32 `json:"price"`
+	Quantity int32 `json:"quantity"`
 }
 
 type Dimensions struct {
-	LengthCm       int32
-	WidthCm        int32
-	HeightCm       int32
-	TotalWeightG   int32
-	TotalVolumeCm3 int32
+	LengthCm       int32 `json:"length_cm"`
+	WidthCm        int32 `json:"width_cm"`
+	HeightCm       int32 `json:"height_cm"`
+	TotalWeightG   int32 `json:"total_weight_g"`
+	TotalVolumeCm3 int32 `json:"total_volume_cm3"`
 }
 
 type GetOptionsResponse struct {
-	Options []*Option
+	Options []*Option `json:"options"`
 }
 
 type GetQuotesResponse struct {
-	Options *Option
+	Options *Option `json:"option"`
 }
 
 type Option struct {
-	OptionId       int32
-	CarrierProduct string
+	OptionId       int32  `json:"option_id"`
+	CarrierProduct string `json:"carrier_product"`
 	// Price is provided in cents
-	Price             int32
-	Currency          string
-	DeliveryTimeSlots []*DeliveryTimeSlot
-	PickupPoints      []*PickupPoint
-	DeliveryType      DeliveryType
+	Price             int32               `json:"price"`
+	Currency          string              `json:"currency"`
+	DeliveryTimeSlots []*DeliveryTimeSlot `json:"delivery_timeslots"`
+	PickupPoints      []*PickupPoint      `json:"pickup_point"`
+	DeliveryType      DeliveryType        `json:"delivery_type"`
 }
 
 type DeliveryTimeSlot struct {
-	Start    time.Time
-	End      time.Time
-	TimeZone time.Location
+	Start    time.Time     `json:"start"`
+	End      time.Time     `json:"end"`
+	TimeZone time.Location `json:"time_zone"`
 }
 
 type PickupPoint struct {
-	PickupPointId string
-	Name          string
-	Address       *Address
-	Phone         string
-	LocationType  LocationType
-	OpeningHours  []*OpeningHours
-	IsOperational bool
+	PickupPointId string          `json:"pickup_point_id"`
+	Name          string          `json:"name"`
+	Address       *Address        `json:"address"`
+	Phone         string          `json:"phone"`
+	LocationType  LocationType    `json:"location_type"`
+	OpeningHours  []*OpeningHours `json:"opening_hours"`
+	IsOperational bool            `json:"is_operational"`
 }
 
 type LocationType int32
@@ -104,7 +104,7 @@ const (
 )
 
 type OpeningHours struct {
-	DayOfWeek string
-	Opens     string
-	Closes    string
+	DayOfWeek string `json:"day_of_week"`
+	Opens     string `json:"opens"`
+	Closes    string `json:"closes"`
 }
