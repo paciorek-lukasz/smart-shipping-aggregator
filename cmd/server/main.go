@@ -63,12 +63,23 @@ func main() {
 
 	httpServer := ihttp.NewHttpServer(aggSvc)
 	mux := http.NewServeMux()
-	mux.HandleFunc("api/quotes", httpServer.GetQuotes)
+	mux.HandleFunc("/api/quotes", httpServer.GetQuotes)
+
+	go func() {
+		log.Printf("HTTP server listening on :8080")
+		if err := http.ListenAndServe(":8080", mux); err != nil {
+			log.Fatalf("failed to serve HTTP: %v", err)
+		}
+	}()
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 
 	<-stop
+
+	log.Println("Shutting down HTTP server gracefully...")
+	mux = nil
+	log.Println("HTTP server stopped")
 
 	log.Println("Shutting down gRPC server gracefully...")
 	s.GracefulStop()
