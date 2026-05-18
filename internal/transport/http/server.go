@@ -25,7 +25,7 @@ func NewHttpServer(service shippingService) *HttpServer {
 
 func (s *HttpServer) GetQuotes(rw http.ResponseWriter, req *http.Request) {
 	if req.Method == http.MethodOptions {
-		rw.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+		rw.Header().Set("Access-Control-Allow-Origin", req.Header.Get("Origin"))
 		rw.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 		rw.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		rw.WriteHeader(http.StatusOK)
