@@ -3,6 +3,7 @@ package rpc
 import (
 	"context"
 
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
@@ -11,7 +12,7 @@ import (
 )
 
 type shippingService interface {
-	FetchQuotes(ctx context.Context, req *domain.GetQuotesRequest) *domain.GetOptionsResponse
+	FetchQuotes(ctx context.Context, req *domain.GetQuotesRequest) (*domain.GetOptionsResponse, map[string]string)
 }
 
 type GrpcServer struct {
@@ -30,7 +31,27 @@ func (h *GrpcServer) GetQuotes(ctx context.Context, req *pb.GetQuotesRequest) (*
 
 	domainReq := mapProtoToDomain(req)
 
-	quotes := h.service.FetchQuotes(ctx, domainReq)
+	quotes, errs := h.service.FetchQuotes(ctx, domainReq)
+	if errs != nil {
+		st := status.New(codes.InvalidArgument, "invalid request parameters")
+
+		br := &errdetails.BadRequest{}
+
+		for field, msg := range errs {
+			v := &errdetails.BadRequest_FieldViolation{
+				Field:       field,
+				Description: msg,
+			}
+			br.FieldViolations = append(br.FieldViolations, v)
+		}
+
+		st, err := st.WithDetails(br)
+		if err != nil {
+			return nil, status.Error(codes.Internal, "failed to update status with error details")
+		}
+
+		return nil, st.Err()
+	}
 
 	mapped, err := mapDomainToProto(quotes)
 	if err != nil {

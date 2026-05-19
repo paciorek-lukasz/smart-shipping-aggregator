@@ -1,12 +1,14 @@
 package domain
 
-import "time"
+import (
+	"time"
+)
 
 type GetQuotesRequest struct {
-	Sender        *Party         `json:"sender"`
-	Recipient     *Party         `json:"recipient"`
+	Sender        *Party         `json:"sender" validate:"required"`
+	Recipient     *Party         `json:"recipient" validate:"required"`
 	Package       *Package       `json:"package"`
-	DeliveryType  DeliveryType   `json:"delivery_type"`
+	DeliveryType  DeliveryType   `json:"delivery_type" validate:"required"`
 	LocationTypes []LocationType `json:"location_types"`
 }
 
@@ -19,17 +21,17 @@ const (
 )
 
 type Party struct {
-	Name    string   `json:"name"`
-	Address *Address `json:"address"`
-	Phone   string   `json:"phone"`
-	Email   string   `json:"email"`
+	Name    string   `json:"name" validate:"required,min=3,max=100"`
+	Address *Address `json:"address" validate:"required"`
+	Phone   string   `json:"phone" validate:"required,e164"`
+	Email   string   `json:"email" validate:"required,email"`
 }
 
 type Address struct {
-	Address    string `json:"address"`
-	PostalCode string `json:"postal_code"`
-	City       string `json:"city"`
-	Country    string `json:"country"`
+	Address    string `json:"address" validate:"required"`
+	PostalCode string `json:"postal_code" validate:"required"`
+	City       string `json:"city" validate:"required"`
+	Country    string `json:"country" validate:"required"`
 	Longitude  string `json:"longitude"`
 	Latitude   string `json:"latitude"`
 }

@@ -10,7 +10,7 @@ import (
 )
 
 type shippingService interface {
-	FetchQuotes(ctx context.Context, req *domain.GetQuotesRequest) *domain.GetOptionsResponse
+	FetchQuotes(ctx context.Context, req *domain.GetQuotesRequest) (*domain.GetOptionsResponse, map[string]string)
 }
 
 type HttpServer struct {
@@ -49,7 +49,12 @@ func (s *HttpServer) GetQuotes(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	resp := s.service.FetchQuotes(req.Context(), &domainReq)
+	resp, errs := s.service.FetchQuotes(req.Context(), &domainReq)
+	if errs != nil {
+		rw.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(rw).Encode(errs)
+		return
+	}
 
 	rw.Header().Set("Access-Control-Allow-Origin", req.Header.Get("Origin"))
 	rw.Header().Set("Content-Type", "application/json")
