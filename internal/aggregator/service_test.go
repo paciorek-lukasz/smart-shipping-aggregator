@@ -18,7 +18,11 @@ func TestService_FetchQuotes_Success(t *testing.T) {
 	}
 
 	svc := NewService([]provider.Provider{mockProvider}, time.Second)
-	resp := svc.FetchQuotes(context.Background(), validRequest())
+	resp, errs := svc.FetchQuotes(context.Background(), validRequest())
+
+	if errs != nil {
+		t.Errorf("expected no validation errors, got %v", errs)
+	}
 
 	if resp == nil || len(resp.Options) != 1 {
 		t.Errorf("expected 1 option, got %d", len(resp.Options))
@@ -33,7 +37,11 @@ func TestService_FetchQuotes_ProviderError(t *testing.T) {
 	}
 
 	svc := NewService([]provider.Provider{mockProvider}, time.Second)
-	resp := svc.FetchQuotes(context.Background(), validRequest())
+	resp, errs := svc.FetchQuotes(context.Background(), validRequest())
+
+	if errs != nil {
+		t.Errorf("expected no validation errors, got %v", errs)
+	}
 
 	if resp == nil || len(resp.Options) != 0 {
 		t.Errorf("expected 0 options on error, got %d", len(resp.Options))
@@ -53,7 +61,11 @@ func TestService_FetchQuotes_MultipleProviders(t *testing.T) {
 	}
 
 	svc := NewService([]provider.Provider{mockProvider1, mockProvider2}, time.Second)
-	resp := svc.FetchQuotes(context.Background(), validRequest())
+	resp, errs := svc.FetchQuotes(context.Background(), validRequest())
+
+	if errs != nil {
+		t.Errorf("expected no validation errors, got %v", errs)
+	}
 
 	if resp == nil || len(resp.Options) != 2 {
 		t.Errorf("expected 2 options, got %d", len(resp.Options))
@@ -68,7 +80,11 @@ func TestService_FetchQuotes_Timeout(t *testing.T) {
 	}
 
 	svc := NewService([]provider.Provider{mockProvider}, 10*time.Millisecond)
-	resp := svc.FetchQuotes(context.Background(), validRequest())
+	resp, errs := svc.FetchQuotes(context.Background(), validRequest())
+
+	if errs != nil {
+		t.Errorf("expected no validation errors, got %v", errs)
+	}
 
 	if resp == nil || len(resp.Options) != 0 {
 		t.Errorf("expected 0 options on timeout, got %d", len(resp.Options))
@@ -77,7 +93,11 @@ func TestService_FetchQuotes_Timeout(t *testing.T) {
 
 func TestService_FetchQuotes_NoProviders(t *testing.T) {
 	svc := NewService([]provider.Provider{}, time.Second)
-	resp := svc.FetchQuotes(context.Background(), validRequest())
+	resp, errs := svc.FetchQuotes(context.Background(), validRequest())
+
+	if errs != nil {
+		t.Errorf("expected no validation errors, got %v", errs)
+	}
 
 	if resp == nil || len(resp.Options) != 0 {
 		t.Errorf("expected 0 options, got %d", len(resp.Options))
@@ -107,6 +127,7 @@ func validRequest() *domain.GetQuotesRequest {
 	return &domain.GetQuotesRequest{
 		Sender: &domain.Party{
 			Name:  "Sender",
+			Phone: "+48123456789",
 			Email: "sender@test.com",
 			Address: &domain.Address{
 				Address:    "123 Main St",
@@ -117,6 +138,7 @@ func validRequest() *domain.GetQuotesRequest {
 		},
 		Recipient: &domain.Party{
 			Name:  "Recipient",
+			Phone: "+48987654321",
 			Email: "recipient@test.com",
 			Address: &domain.Address{
 				Address:    "456 Elm St",

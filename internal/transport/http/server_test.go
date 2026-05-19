@@ -110,16 +110,44 @@ func TestGetQuotes_NilResponseFromService(t *testing.T) {
 	}
 }
 
-type mockShippingService struct {
-	result *domain.GetOptionsResponse
-	err    error
+func TestGetQuotes_ValidationError(t *testing.T) {
+	mockService := &mockShippingService{
+		errs: map[string]string{"sender.name": "is required"},
+	}
+
+	server := NewHttpServer(mockService)
+
+	reqBody := validRequest()
+	reqJSON, _ := json.Marshal(reqBody)
+	req := httptest.NewRequest(http.MethodPost, "/api/quotes", bytes.NewReader(reqJSON))
+	rw := httptest.NewRecorder()
+
+	server.GetQuotes(rw, req)
+
+	if rw.Code != http.StatusBadRequest {
+		t.Errorf("expected status %d, got %d", http.StatusBadRequest, rw.Code)
+	}
+
+	var errs map[string]string
+	if err := json.Unmarshal(rw.Body.Bytes(), &errs); err != nil {
+		t.Errorf("failed to unmarshal error response: %v", err)
+	}
+
+	if errs["sender.name"] != "is required" {
+		t.Errorf("expected sender.name error, got %v", errs)
+	}
 }
 
-func (m *mockShippingService) FetchQuotes(ctx context.Context, req *domain.GetQuotesRequest) *domain.GetOptionsResponse {
-	if m.err != nil {
-		return nil
+type mockShippingService struct {
+	result *domain.GetOptionsResponse
+	errs   map[string]string
+}
+
+func (m *mockShippingService) FetchQuotes(ctx context.Context, req *domain.GetQuotesRequest) (*domain.GetOptionsResponse, map[string]string) {
+	if m.errs != nil {
+		return nil, m.errs
 	}
-	return m.result
+	return m.result, nil
 }
 
 func validRequest() *domain.GetQuotesRequest {

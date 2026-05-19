@@ -2,7 +2,6 @@ package rpc
 
 import (
 	"context"
-	"errors"
 	"testing"
 
 	"google.golang.org/grpc/codes"
@@ -63,16 +62,17 @@ func TestHandler_GetQuotes_MissingRecipient(t *testing.T) {
 	}
 }
 
-func TestHandler_GetQuotes_ServiceError(t *testing.T) {
+func TestHandler_GetQuotes_ValidationError(t *testing.T) {
 	mockService := &mockShippingService{
-		err: errors.New("service error"),
+		errs: map[string]string{"sender.name": "is required"},
 	}
 
 	handler := NewGrpcServer(mockService)
 	_, err := handler.GetQuotes(context.Background(), validProtoRequest())
 
-	if err == nil {
-		t.Errorf("expected error, got nil")
+	st, ok := status.FromError(err)
+	if !ok || st.Code() != codes.InvalidArgument {
+		t.Errorf("expected InvalidArgument, got %v", st.Code())
 	}
 }
 
@@ -121,14 +121,14 @@ func TestMapDomainToProto_NilResponse(t *testing.T) {
 
 type mockShippingService struct {
 	result *domain.GetOptionsResponse
-	err    error
+	errs   map[string]string
 }
 
-func (m *mockShippingService) FetchQuotes(ctx context.Context, req *domain.GetQuotesRequest) *domain.GetOptionsResponse {
-	if m.err != nil {
-		return nil
+func (m *mockShippingService) FetchQuotes(ctx context.Context, req *domain.GetQuotesRequest) (*domain.GetOptionsResponse, map[string]string) {
+	if m.errs != nil {
+		return nil, m.errs
 	}
-	return m.result
+	return m.result, nil
 }
 
 func validProtoRequest() *pb.GetQuotesRequest {
