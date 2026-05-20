@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/go-playground/validator"
@@ -97,7 +98,12 @@ func validateRequest(req *domain.GetQuotesRequest) map[string]string {
 				message = fmt.Sprintf("failed validation rule: %s", ve.Tag())
 			}
 
-			errorReport[ve.Field()] = message
+			parts := strings.SplitN(ve.Namespace(), ".", 2)
+			if len(parts) > 1 {
+				errorReport[parts[1]] = message
+			} else {
+				errorReport[ve.Namespace()] = message
+			}
 		}
 	}
 
