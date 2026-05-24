@@ -37,6 +37,8 @@ func (s *HttpServer) GetQuotes(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	rw.Header().Set("Access-Control-Allow-Origin", req.Header.Get("Origin"))
+
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
 		http.Error(rw, "failed to extract body from the request", http.StatusBadRequest)
@@ -56,7 +58,6 @@ func (s *HttpServer) GetQuotes(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	rw.Header().Set("Access-Control-Allow-Origin", req.Header.Get("Origin"))
 	rw.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(rw).Encode(resp)
 }
